@@ -1,0 +1,9 @@
+{
+	"name": "Game.Utilities",
+  "references": [
+    "VContainer",
+    "UniTask",
+    "ContentSystem.Core",
+    "DCFApixels.DebugX"
+  ]
+}

@@ -1,0 +1,20 @@
+OVDF v1.1
+Code.Game.Scripts.Attributes.StatsSheet+Stat, Game.Scripts
+
+# $4nNByhhnGHFAV2zN2JVPuv
+Position: $root:0
++ [Sirenix.OdinInspector.HorizontalGroupAttribute]
+	GroupName = "1"
+
+# $C4ie5EHac5SDdLJtCCrhgd
+Position: $root:1
++ [Sirenix.OdinInspector.HorizontalGroupAttribute]
+	GroupName = "1"
+
+# AttributeRef
+Position: $4nNByhhnGHFAV2zN2JVPuv:0
++ [Sirenix.OdinInspector.HideLabelAttribute]
+
+# Value
+Position: $4nNByhhnGHFAV2zN2JVPuv:1
++ [Sirenix.OdinInspector.HideLabelAttribute]

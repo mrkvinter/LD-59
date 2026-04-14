@@ -1,0 +1,82 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5b1d2fa21d246e9a36e6f4f38c5bf9f, type: 3}
+  m_Name: ContentDatabase
+  m_EditorClassIdentifier: 
+  <Defs>k__BackingField: []
+  <Definitions>k__BackingField:
+  - rid: 565675738626785806
+  - rid: 565675738626785807
+  - rid: 565675738626785808
+  - rid: 565675738626785809
+  - rid: 565675738626785810
+  - rid: 565675738626785811
+  - rid: 565675738626785812
+  - rid: 565675738626785813
+  - rid: 565675738626785814
+  references:
+    version: 2
+    RefIds:
+    - rid: 565675738626785806
+      type: {class: PlayerDataSingletonDef, ns: Code.Game.Scripts.Player, asm: Game.Scripts}
+      data:
+        <Id>k__BackingField: 
+        InteractViewDistance: 5
+        InteractViewAngle: 120
+    - rid: 565675738626785807
+      type: {class: AttributeDef, ns: Code.Game.Scripts.Attributes, asm: Game.Scripts}
+      data:
+        <Id>k__BackingField: Agility
+    - rid: 565675738626785808
+      type: {class: AttributeDef, ns: Code.Game.Scripts.Attributes, asm: Game.Scripts}
+      data:
+        <Id>k__BackingField: Chakra
+    - rid: 565675738626785809
+      type: {class: AttributeDef, ns: Code.Game.Scripts.Attributes, asm: Game.Scripts}
+      data:
+        <Id>k__BackingField: MaxHealth
+    - rid: 565675738626785810
+      type: {class: AttributeDef, ns: Code.Game.Scripts.Attributes, asm: Game.Scripts}
+      data:
+        <Id>k__BackingField: Strength
+    - rid: 565675738626785811
+      type: {class: ItemDef, ns: InventorySystem, asm: InventorySystem}
+      data:
+        <Id>k__BackingField: Apple
+        Icon: {fileID: 0}
+        Name: Apple
+        Weight: 0
+        Description: 
+        Prefab: {fileID: 5592942485791308179, guid: 0c7048e45cd439a40bc2ca8aa29e7977, type: 3}
+    - rid: 565675738626785812
+      type: {class: GameAppSetting, ns: Game.Main.Settings, asm: Game.Main}
+      data:
+        <Id>k__BackingField: 
+        GameScene: SampleScene
+    - rid: 565675738626785813
+      type: {class: WidgetProps, ns: Game.UI.Base, asm: Game.UI}
+      data:
+        <Id>k__BackingField: ItemInfoPanel
+        <Prefab>k__BackingField: {fileID: 9052068216644716588, guid: db4dd25704002514096e703ef9123195, type: 3}
+        <Target>k__BackingField: 1
+    - rid: 565675738626785814
+      type: {class: WeaponDef, ns: Code.Game.Scripts.Items, asm: Game.Scripts}
+      data:
+        <Id>k__BackingField: Sword
+        Icon: {fileID: 21300000, guid: 5c0b4e27b85e52d4ba63273ce37e4639, type: 3}
+        Name: Sword
+        Weight: 1
+        Description: 
+        Prefab: {fileID: 773185781578622903, guid: 066e48f8317817d4a9d6cbc1468f5f07, type: 3}
+        mainAttackAbility: {fileID: 905089004689639948, guid: 19be04fc95a21824c9d3dff1eaf7c9a1, type: 3}
+        mainAttackAttribute:
+          id: Strength

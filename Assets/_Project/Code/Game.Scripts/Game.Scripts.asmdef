@@ -1,0 +1,33 @@
+{
+    "name": "Game.Scripts",
+    "rootNamespace": "",
+    "references": [
+        "DefinitionSystem.Core",
+        "Unity.TextMeshPro",
+        "Unity.Cinemachine",
+        "Kybernetik.Animancer",
+        "Kybernetik.Animancer.FSM",
+        "UniTask",
+        "Unity.Addressables",
+        "UniTask.Addressables",
+        "InventorySystem",
+        "VContainer",
+        "Game.Core",
+        "Game.UI",
+        "Game.Utilities",
+        "Unity.InputSystem",
+        "StarterAssets",
+        "DCFApixels.DebugX"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [
+        ""
+    ],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

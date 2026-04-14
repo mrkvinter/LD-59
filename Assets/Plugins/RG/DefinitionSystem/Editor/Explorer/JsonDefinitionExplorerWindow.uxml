@@ -1,0 +1,17 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Plugins/RG/DefinitionSystem/Editor/Explorer/JsonDefinitionExplorerWindow.uss?fileID=7433441132597879392&amp;guid=1deb6564c0cef9a40a54090464d3b1cf&amp;type=3#JsonDefinitionExplorerWindow" />
+    <ui:VisualElement class="jsce-root">
+        <uie:Toolbar name="toolbar" style="height: 22px;">
+            <uie:ToolbarButton name="newButton" text="+" tooltip="Create new entry" style="height: 100%; width: 22px; font-size: 18px; -unity-text-align: middle-center;" />
+            <uie:ToolbarSpacer language-direction="Inherit" style="flex-grow: 1;" />
+            <uie:ToolbarSearchField name="searchField" />
+            <ui:DropdownField name="typeFilter" />
+        </uie:Toolbar>
+        <ui:TwoPaneSplitView name="splitView">
+            <ui:VisualElement name="folderTreeParent">
+                <ui:TreeView name="folderTree" fixed-item-height="17" />
+            </ui:VisualElement>
+            <ui:ListView name="contentList" fixed-item-height="17" show-alternating-row-backgrounds="None" />
+        </ui:TwoPaneSplitView>
+    </ui:VisualElement>
+</ui:UXML>

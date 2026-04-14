@@ -1,0 +1,26 @@
+{
+    "name": "Game.UI",
+    "rootNamespace": "",
+    "references": [
+        "DOTween.Modules",
+        "Unity.TextMeshPro",
+        "UniTask",
+        "UniTask.DOTween",
+        "Game.Utilities",
+        "DefinitionSystem.Core",
+        "Game.Core",
+        "R3.Unity",
+        "Unity.Timeline",
+        "KvintessentialGames",
+        "Kybernetik.Animancer"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,0 +1,52 @@
+.jsce-root {
+    flex-grow: 1;
+    flex-direction: column;
+}
+
+.jsce-root > .unity-two-pane-split-view {
+    flex-grow: 1;
+}
+
+#newButton {
+    align-self: center;
+}
+
+#folderTreeParent {
+    min-width: 50px;
+    width: 200px;
+    overflow: hidden;
+}
+
+#folderTree {
+    min-width: 200px;
+    /*-width: 160px;*/
+}
+
+#contentList {
+    flex-grow: 1;
+    --background-color: rgba(0, 0, 0, 0.1);
+}
+
+#unity-tree-view__item-content {
+    align-self: center;
+    height: 100%;
+}
+
+#unity-tree-view__item-content #icon{
+    width: 20px;
+    height: 100%;
+
+    -unity-background-scale-mode: scale-and-crop;
+}
+
+.unity-list-view__item {
+    padding-left: 13px;
+}
+
+.unity-list-view__item #icon {
+    width: 20px;
+    height: 100%;
+    margin-right: 4px;
+    
+    -unity-background-scale-mode: scale-and-crop;
+}

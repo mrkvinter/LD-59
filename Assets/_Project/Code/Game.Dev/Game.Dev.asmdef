@@ -1,0 +1,9 @@
+﻿{
+  "name": "Game.Dev",
+  "references": [
+    "Game.Utilities",
+    "Game.Core",
+    "DefinitionSystem.Core",
+    "QFSW.QC"
+  ]
+}

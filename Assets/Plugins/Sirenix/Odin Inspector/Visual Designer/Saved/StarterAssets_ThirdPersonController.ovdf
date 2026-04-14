@@ -1,0 +1,15 @@
+OVDF v1.1
+StarterAssets.ThirdPersonController, Assembly-CSharp
+MetaGuid:26e54e5a728a9234ab24fcf1460ed8a2
+
+# $9QLJNGpJZHLEjvYjD5NC3n
+Position: $root:0
++ [Sirenix.OdinInspector.TitleGroupAttribute]
+	GroupName = "Player"
+
+# MoveSpeed
+Position: $9QLJNGpJZHLEjvYjD5NC3n:0
+- [UnityEngine.HeaderAttribute]
+
+# SprintSpeed
+Position: $root:1

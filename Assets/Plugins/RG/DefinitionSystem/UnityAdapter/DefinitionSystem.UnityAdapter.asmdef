@@ -1,0 +1,20 @@
+{
+    "name": "DefinitionSystem.UnityAdapter",
+    "rootNamespace": "",
+    "references": [
+        "GUID:9f83f8dfcf56405badc08adb0b2839cf",
+        "GUID:ad968d605628d06499b62cdc30f11cf8"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "Newtonsoft.Json.dll",
+        "Sirenix.OdinInspector.Attributes.dll"
+    ],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

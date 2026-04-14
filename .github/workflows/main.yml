@@ -1,0 +1,79 @@
+name: Build and Deploy to itch.io
+
+on:
+  push:
+    branches:
+      - main
+      - test
+  workflow_dispatch:
+      inputs:
+        workflow_mode:
+          description: '[release] [Android, iOS, StandaloneLinux64, WebGL, StandaloneWindows, StandaloneWindows64, WSAPlayer, StandaloneOSX, Steam]'
+          required: false
+          default: ''
+
+env:
+  UNITY_PROJECT_PATH: ./
+
+jobs:
+  buildWithLinux:
+    name: Build for WebGL
+    runs-on: self-hosted
+    strategy:
+      fail-fast: false
+      matrix:
+        targetPlatform:
+          - WebGL
+    outputs:
+      buildVersion: ${{ steps.buildStep.outputs.buildVersion }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          clean: false
+
+      - name: Git LFS Pull
+        run: |
+          git lfs pull
+          git add .
+          git reset --hard
+
+      - name: Compute build timestamp
+        id: buildMeta
+        run: echo "timestamp=$(date -u +'%yyx-%m-%dT%H:%M:%S')" >> "$GITHUB_OUTPUT"
+
+      - name: Build Unity Project
+        id: buildStep
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+        with:
+          projectPath: ${{ env.UNITY_PROJECT_PATH }}/
+          targetPlatform: ${{ matrix.targetPlatform }}
+          versioning: Semantic
+          buildMethod: UnityBuilderAction.BuildScript.Build
+          customParameters: -buildNumber ${{ github.run_number }} -buildTimestamp ${{ steps.buildMeta.outputs.timestamp }}
+          
+      - name: Upload Build
+        uses: actions/upload-artifact@v4
+        with:
+          name: cgs-web
+          path: ./build/${{ matrix.targetPlatform }}
+
+      - name: Zip Build
+        run: zip -qq -r build/web.zip build/WebGL
+
+      - name: Install butler
+        run: |
+          curl -L -o butler.zip https://broth.itch.zone/butler/darwin-amd64/LATEST/archive/default
+          unzip butler.zip
+          chmod +x butler
+          ./butler -V
+
+      - name: Push to itch.io
+        run: ./butler push ./build/web.zip mrkvinter/ld-59:webgl
+        env:
+          BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}

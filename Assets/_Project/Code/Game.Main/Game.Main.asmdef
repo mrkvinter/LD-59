@@ -1,0 +1,26 @@
+{
+    "name": "Game.Main",
+    "rootNamespace": "",
+    "references": [
+        "Game.Scripts",
+        "Game.SCO",
+        "DefinitionSystem.Core",
+        "DefinitionSystem.UnityAdapter",
+        "UniTask",
+        "VContainer",
+        "Game.Core",
+        "Game.UI",
+        "Game.Utilities",
+        "GameAnalyticsSDK",
+        "KvintessentialGames"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

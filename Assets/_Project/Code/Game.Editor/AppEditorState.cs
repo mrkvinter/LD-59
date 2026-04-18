@@ -16,7 +16,7 @@ namespace Code.Game.Editor
         {
             var builder = new ContainerBuilder();
 
-            var database = Resources.Load<DefinitionDatabase>("Data/DefinitionDatabase");
+            var database = Resources.Load<DefinitionDatabase>("DefinitionDatabase");
             builder.Register<GameCheatFlags>(Lifetime.Singleton).AsImplementedInterfaces().AsSelf();
             builder.Register<DebugSaveLoadService>(Lifetime.Singleton).AsImplementedInterfaces().AsSelf();
             DefInstaller.Install(builder, database);

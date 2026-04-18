@@ -41,7 +41,7 @@ jobs:
 
       - name: Compute build timestamp
         id: buildMeta
-        run: echo "timestamp=$(date -u +'%yyx-%m-%dT%H:%M:%S')" >> "$GITHUB_OUTPUT"
+        run: echo "timestamp=$(date -u +'%y.%m.%d-%H:%M')" >> "$GITHUB_OUTPUT"
 
       - name: Build Unity Project
         id: buildStep

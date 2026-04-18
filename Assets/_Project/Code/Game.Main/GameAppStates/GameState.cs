@@ -1,5 +1,6 @@
 ﻿using Code.Game.Core;
-using Code.Game.Scripts.SceneLinks;
+using Code.Game.Scripts;
+using Code.Game.Scripts.GameStates;
 using Cysharp.Threading.Tasks;
 using Game.Main.Settings;
 using Game.Scripts.SaveLoadSystem;
@@ -47,9 +48,14 @@ namespace Game.Main.GameAppStates
             LifetimeScope = parentLifetimeScope.CreateChild(builder =>
             {
                 builder.RegisterBuildCallback(G.Initialize);
+                
+                builder.RegisterInstance(sceneLinks).AsSelf();
+                builder.Register<GameFlowState>(Lifetime.Singleton).AsImplementedInterfaces().AsSelf();
             });
 
             await UniTask.DelayFrame(2);
+            
+            LifetimeScope.Container.Resolve<GameFlowState>().Initialize();
         }
 
         public async UniTask Exit()

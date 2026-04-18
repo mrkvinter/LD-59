@@ -1,0 +1,13 @@
+{
+  "type": "Code.Game.Scripts.Battle.SignDef",
+  "Sign": 2,
+  "Sprite": {
+    "guid": "add44f82197341349826c4c805080923",
+    "fileID": 21300000
+  },
+  "BeatSigns": [
+    1,
+    5
+  ],
+  "Id": "Papper"
+}

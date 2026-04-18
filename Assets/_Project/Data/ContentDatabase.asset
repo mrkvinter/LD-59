@@ -14,69 +14,52 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Defs>k__BackingField: []
   <Definitions>k__BackingField:
-  - rid: 565675738626785806
-  - rid: 565675738626785807
-  - rid: 565675738626785808
-  - rid: 565675738626785809
-  - rid: 565675738626785810
-  - rid: 565675738626785811
-  - rid: 565675738626785812
-  - rid: 565675738626785813
-  - rid: 565675738626785814
+  - rid: 565676037243142500
+  - rid: 565676037243142501
+  - rid: 565676037243142502
+  - rid: 565676037243142503
+  - rid: 565676037243142504
+  - rid: 565676037243142505
   references:
     version: 2
     RefIds:
-    - rid: 565675738626785806
-      type: {class: PlayerDataSingletonDef, ns: Code.Game.Scripts.Player, asm: Game.Scripts}
-      data:
-        <Id>k__BackingField: 
-        InteractViewDistance: 5
-        InteractViewAngle: 120
-    - rid: 565675738626785807
-      type: {class: AttributeDef, ns: Code.Game.Scripts.Attributes, asm: Game.Scripts}
-      data:
-        <Id>k__BackingField: Agility
-    - rid: 565675738626785808
-      type: {class: AttributeDef, ns: Code.Game.Scripts.Attributes, asm: Game.Scripts}
-      data:
-        <Id>k__BackingField: Chakra
-    - rid: 565675738626785809
-      type: {class: AttributeDef, ns: Code.Game.Scripts.Attributes, asm: Game.Scripts}
-      data:
-        <Id>k__BackingField: MaxHealth
-    - rid: 565675738626785810
-      type: {class: AttributeDef, ns: Code.Game.Scripts.Attributes, asm: Game.Scripts}
-      data:
-        <Id>k__BackingField: Strength
-    - rid: 565675738626785811
-      type: {class: ItemDef, ns: InventorySystem, asm: InventorySystem}
-      data:
-        <Id>k__BackingField: Apple
-        Icon: {fileID: 0}
-        Name: Apple
-        Weight: 0
-        Description: 
-        Prefab: {fileID: 5592942485791308179, guid: 0c7048e45cd439a40bc2ca8aa29e7977, type: 3}
-    - rid: 565675738626785812
+    - rid: 565676037243142500
       type: {class: GameAppSetting, ns: Game.Main.Settings, asm: Game.Main}
       data:
         <Id>k__BackingField: 
-        GameScene: SampleScene
-    - rid: 565675738626785813
-      type: {class: WidgetProps, ns: Game.UI.Base, asm: Game.UI}
+        GameScene: MainScene
+    - rid: 565676037243142501
+      type: {class: SignDef, ns: Code.Game.Scripts.Battle, asm: Game.Scripts}
       data:
-        <Id>k__BackingField: ItemInfoPanel
-        <Prefab>k__BackingField: {fileID: 9052068216644716588, guid: db4dd25704002514096e703ef9123195, type: 3}
-        <Target>k__BackingField: 1
-    - rid: 565675738626785814
-      type: {class: WeaponDef, ns: Code.Game.Scripts.Items, asm: Game.Scripts}
+        <Id>k__BackingField: F
+        Sign: 5
+        Sprite: {fileID: 21300000, guid: 38497ce17def40948bbf48bf9a3775ba, type: 3}
+        BeatSigns: 05000000
+    - rid: 565676037243142502
+      type: {class: SignDef, ns: Code.Game.Scripts.Battle, asm: Game.Scripts}
       data:
-        <Id>k__BackingField: Sword
-        Icon: {fileID: 21300000, guid: 5c0b4e27b85e52d4ba63273ce37e4639, type: 3}
-        Name: Sword
-        Weight: 1
-        Description: 
-        Prefab: {fileID: 773185781578622903, guid: 066e48f8317817d4a9d6cbc1468f5f07, type: 3}
-        mainAttackAbility: {fileID: 905089004689639948, guid: 19be04fc95a21824c9d3dff1eaf7c9a1, type: 3}
-        mainAttackAttribute:
-          id: Strength
+        <Id>k__BackingField: Goat
+        Sign: 4
+        Sprite: {fileID: 21300000, guid: 96f72008f94d5dd4fbbc32a830ead91a, type: 3}
+        BeatSigns: 010000000200000003000000
+    - rid: 565676037243142503
+      type: {class: SignDef, ns: Code.Game.Scripts.Battle, asm: Game.Scripts}
+      data:
+        <Id>k__BackingField: Papper
+        Sign: 2
+        Sprite: {fileID: 21300000, guid: add44f82197341349826c4c805080923, type: 3}
+        BeatSigns: 0100000005000000
+    - rid: 565676037243142504
+      type: {class: SignDef, ns: Code.Game.Scripts.Battle, asm: Game.Scripts}
+      data:
+        <Id>k__BackingField: Rock
+        Sign: 1
+        Sprite: {fileID: 21300000, guid: 670f50645234fa34c86ca6b4f51a3773, type: 3}
+        BeatSigns: 0300000005000000
+    - rid: 565676037243142505
+      type: {class: SignDef, ns: Code.Game.Scripts.Battle, asm: Game.Scripts}
+      data:
+        <Id>k__BackingField: Scissors
+        Sign: 3
+        Sprite: {fileID: 21300000, guid: 4753b4078f8c6c542a7a818f2b8187eb, type: 3}
+        BeatSigns: 0300000005000000

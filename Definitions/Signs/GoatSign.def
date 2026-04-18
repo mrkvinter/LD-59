@@ -1,0 +1,14 @@
+{
+  "type": "Code.Game.Scripts.Battle.SignDef",
+  "Sign": 4,
+  "Sprite": {
+    "guid": "96f72008f94d5dd4fbbc32a830ead91a",
+    "fileID": 21300000
+  },
+  "BeatSigns": [
+    1,
+    2,
+    3
+  ],
+  "Id": "Goat"
+}

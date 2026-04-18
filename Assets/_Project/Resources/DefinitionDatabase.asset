@@ -14,49 +14,58 @@ MonoBehaviour:
   m_EditorClassIdentifier: DefinitionSystem.UnityAdapter::RG.DefinitionSystem.UnityAdapter.DefinitionDatabase
   <Defs>k__BackingField: []
   <Definitions>k__BackingField:
-  - rid: 565676037243142543
-  - rid: 565676037243142544
-  - rid: 565676037243142545
-  - rid: 565676037243142546
-  - rid: 565676037243142547
-  - rid: 565676037243142548
+  - rid: 565676037243142659
+  - rid: 565676037243142660
+  - rid: 565676037243142661
+  - rid: 565676037243142662
+  - rid: 565676037243142663
+  - rid: 565676037243142664
+  - rid: 565676037243142665
   references:
     version: 2
     RefIds:
-    - rid: 565676037243142543
+    - rid: 565676037243142659
+      type: {class: ItemDef, ns: Code.Game.Scripts.Battle.Items, asm: Game.Scripts}
+      data:
+        <Id>k__BackingField: BrokenGlass
+        Name: Broken mirror
+        Description: 'Reverses the outcome of the next move: a win becomes a loss,
+          and a loss becomes a win.'
+        Prefab: {fileID: 211301192306214981, guid: d4612ac804f036c4cab2d5b5baa0f92e, type: 3}
+    - rid: 565676037243142660
       type: {class: GameAppSetting, ns: Game.Main.Settings, asm: Game.Main}
       data:
         <Id>k__BackingField: 
         GameScene: MainScene
-    - rid: 565676037243142544
+    - rid: 565676037243142661
       type: {class: SignDef, ns: Code.Game.Scripts.Battle, asm: Game.Scripts}
       data:
         <Id>k__BackingField: F
         Sign: 5
         Sprite: {fileID: 21300000, guid: 38497ce17def40948bbf48bf9a3775ba, type: 3}
         BeatSigns: 04000000
-    - rid: 565676037243142545
+    - rid: 565676037243142662
       type: {class: SignDef, ns: Code.Game.Scripts.Battle, asm: Game.Scripts}
       data:
         <Id>k__BackingField: Goat
         Sign: 4
         Sprite: {fileID: 21300000, guid: 96f72008f94d5dd4fbbc32a830ead91a, type: 3}
         BeatSigns: 010000000200000003000000
-    - rid: 565676037243142546
+    - rid: 565676037243142663
       type: {class: SignDef, ns: Code.Game.Scripts.Battle, asm: Game.Scripts}
       data:
         <Id>k__BackingField: Papper
         Sign: 2
         Sprite: {fileID: 21300000, guid: add44f82197341349826c4c805080923, type: 3}
         BeatSigns: 0100000005000000
-    - rid: 565676037243142547
+    - rid: 565676037243142664
       type: {class: SignDef, ns: Code.Game.Scripts.Battle, asm: Game.Scripts}
       data:
         <Id>k__BackingField: Rock
         Sign: 1
         Sprite: {fileID: 21300000, guid: 670f50645234fa34c86ca6b4f51a3773, type: 3}
         BeatSigns: 0300000005000000
-    - rid: 565676037243142548
+    - rid: 565676037243142665
       type: {class: SignDef, ns: Code.Game.Scripts.Battle, asm: Game.Scripts}
       data:
         <Id>k__BackingField: Scissors

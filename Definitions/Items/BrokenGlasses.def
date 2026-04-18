@@ -1,0 +1,10 @@
+{
+  "type": "Code.Game.Scripts.Battle.Items.ItemDef",
+  "Name": "Broken mirror",
+  "Description": "Reverses the outcome of the next move: a win becomes a loss, and a loss becomes a win.",
+  "Prefab": {
+    "guid": "d4612ac804f036c4cab2d5b5baa0f92e",
+    "fileID": 211301192306214981
+  },
+  "Id": "BrokenGlass"
+}

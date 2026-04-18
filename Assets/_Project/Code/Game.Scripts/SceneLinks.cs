@@ -1,4 +1,5 @@
 ﻿using Code.Game.Scripts.Battle;
+using Code.Game.Scripts.Battle.Items;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -25,10 +26,15 @@ namespace Code.Game.Scripts
         public TMP_Text EnemyStateText;
 
         public Button RestartButton;
+        public ItemDescription ItemDescription;
 
         [Header("Titles")]
         public GameObject WinTitle;
         public GameObject LoseTitle;
         public GameObject DrawTitle;
+
+        [Header("Items")]
+        public Transform CenterSocket;
+        public Transform[] ItemSockets;
     }
 }

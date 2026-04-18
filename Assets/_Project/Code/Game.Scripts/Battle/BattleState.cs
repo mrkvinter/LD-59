@@ -3,30 +3,51 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Code.Game.Core;
+using Code.Game.Scripts.Battle.Items;
 using Cysharp.Threading.Tasks;
+using DG.Tweening;
+using UnityEngine;
 using Object = UnityEngine.Object;
-using Random = UnityEngine.Random;
 
 namespace Code.Game.Scripts.Battle
 {
     public class BattleState
     {
         private const int Rounds = 3;
-        private const int SignsPerRound = 5;
+        private const int SignsPerRound = 6;
         
         private int currentRound;
         private Player enemyPlayer;
         private Player player;
 
-        private SceneLinks sceneLinks = G.Resolve<SceneLinks>();
+        private readonly SceneLinks sceneLinks = G.Resolve<SceneLinks>();
+        private readonly ItemsService itemsService;
+        
+        private List<IAffectGame> affectGames = new();
+
+        public BattleState()
+        {
+            itemsService = new ItemsService();
+
+            var item = itemsService.CreateItem(ItemDefType.BrokenGlass);
+            item.View.OnUse += () => UseItem(item).Forget();
+        }
+
+        private async UniTask UseItem(Item item)
+        {
+            item.View.transform.parent = sceneLinks.CenterSocket;
+            await item.View.transform.DOLocalMove(Vector3.zero, 0.5f);
+            affectGames.Add(item.GetAffectGame());
+            itemsService.Release(item);
+        }
 
         public void OnEnter()
         {
             currentRound = 0;
             var baseDeck = new List<Sign>();
-            baseDeck.AddRange(Enumerable.Repeat(Sign.Rock, 3));
-            baseDeck.AddRange(Enumerable.Repeat(Sign.Paper, 3));
-            baseDeck.AddRange(Enumerable.Repeat(Sign.Scissors, 3));
+            baseDeck.AddRange(Enumerable.Repeat(Sign.Rock, 2));
+            baseDeck.AddRange(Enumerable.Repeat(Sign.Paper, 2));
+            baseDeck.AddRange(Enumerable.Repeat(Sign.Scissors, 2));
             baseDeck.AddRange(Enumerable.Repeat(Sign.Goat, 1));
             baseDeck.AddRange(Enumerable.Repeat(Sign.Fuck, 1));
             
@@ -97,6 +118,13 @@ namespace Code.Game.Scripts.Battle
             await UniTask.Delay(TimeSpan.FromSeconds(2f));
             
             var winner = GetWinner(enemyPlayer.SelectedSign, cardView.SelectedSign);
+            Debug.Log($"Winner: {winner}, Enemy Sign: {enemyPlayer.SelectedSign}, Player Sign: {cardView.SelectedSign}");
+
+            if (affectGames.FirstOrDefault(e => e is IAffectWinner) is IAffectWinner affectWinner)
+            {
+                affectGames.Remove(affectWinner);
+                winner = affectWinner.AffectWinner(winner);
+            }
             
             if (winner == Winner.Right)
             {
@@ -151,59 +179,6 @@ namespace Code.Game.Scripts.Battle
         Left,
         Right,
         Draw
-    }
-
-    public class Player
-    {
-        public int Health { get; private set; }
-        
-        public readonly List<Sign> Signs = new();
-        public readonly List<Sign> SignsBag = new();
-        public readonly List<Sign> SignsHand = new();
-        
-        public Sign SelectedSign { get; private set; }
-        public int RockProbability => (int)(SignsHand.Count(x => x == Sign.Rock) / (float) SignsHand.Count * 100);
-        public int PaperProbability => (int)((SignsHand.Count(x => x == Sign.Paper) / (float) SignsHand.Count) * 100);
-        public int ScissorsProbability => (int)((SignsHand.Count(x => x == Sign.Scissors) / (float) SignsHand.Count) * 100);
-        public int GoatProbability => (int)((SignsHand.Count(x => x == Sign.Goat) / (float) SignsHand.Count) * 100);
-        public int FProbability => (int)((SignsHand.Count(x => x == Sign.Fuck) / (float) SignsHand.Count) * 100);
-
-        public Player(int health, List<Sign> signsBag)
-        {
-            Health = health;
-            SignsBag = signsBag.OrderBy(x => Guid.NewGuid()).ToList();
-        }  
-        
-        public void Draw(int count)
-        {
-            while (count > 0 && SignsBag.Count > 0)
-            {
-                var sign = SignsBag[0];
-                SignsBag.RemoveAt(0);
-                SignsHand.Add(sign);
-                count--;
-            }
-        }
-
-        public void SelectSign()
-        {
-            SelectedSign = SignsHand[Random.Range(0, SignsHand.Count)];
-        }
-
-        public void ReduceHealth()
-        {
-            Health--;
-        }
-
-        public void RemoveSelectedSign()
-        {
-            SignsHand.Remove(SelectedSign);
-        }
-        
-        public void RemoveSign(Sign sign)
-        {
-            SignsHand.Remove(sign);
-        }
     }
 
     public enum Sign

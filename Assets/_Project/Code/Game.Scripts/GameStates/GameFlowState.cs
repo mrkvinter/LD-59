@@ -7,6 +7,7 @@ namespace Code.Game.Scripts.GameStates
     public class GameFlowState
     {
         private BattleState battleState;
+        
 
         public GameFlowState()
         {
@@ -20,5 +21,7 @@ namespace Code.Game.Scripts.GameStates
             G.Resolve<SceneLinks>().RestartButton.onClick
                 .AddListener(G.Resolve<IGameDirector>().RestartGame);
         }
+        
+        
     }
 }

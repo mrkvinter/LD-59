@@ -14,49 +14,55 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Defs>k__BackingField: []
   <Definitions>k__BackingField:
-  - rid: 565676037243142500
-  - rid: 565676037243142501
-  - rid: 565676037243142502
-  - rid: 565676037243142503
-  - rid: 565676037243142504
-  - rid: 565676037243142505
+  - rid: 565676037243142624
+  - rid: 565676037243142625
+  - rid: 565676037243142626
+  - rid: 565676037243142627
+  - rid: 565676037243142628
+  - rid: 565676037243142629
+  - rid: 565676037243142630
   references:
     version: 2
     RefIds:
-    - rid: 565676037243142500
+    - rid: 565676037243142624
+      type: {class: ItemDef, ns: Code.Game.Scripts.Battle.Items, asm: Game.Scripts}
+      data:
+        <Id>k__BackingField: BrokenGlass
+        Prefab: {fileID: 211301192306214981, guid: d4612ac804f036c4cab2d5b5baa0f92e, type: 3}
+    - rid: 565676037243142625
       type: {class: GameAppSetting, ns: Game.Main.Settings, asm: Game.Main}
       data:
         <Id>k__BackingField: 
         GameScene: MainScene
-    - rid: 565676037243142501
+    - rid: 565676037243142626
       type: {class: SignDef, ns: Code.Game.Scripts.Battle, asm: Game.Scripts}
       data:
         <Id>k__BackingField: F
         Sign: 5
         Sprite: {fileID: 21300000, guid: 38497ce17def40948bbf48bf9a3775ba, type: 3}
-        BeatSigns: 05000000
-    - rid: 565676037243142502
+        BeatSigns: 04000000
+    - rid: 565676037243142627
       type: {class: SignDef, ns: Code.Game.Scripts.Battle, asm: Game.Scripts}
       data:
         <Id>k__BackingField: Goat
         Sign: 4
         Sprite: {fileID: 21300000, guid: 96f72008f94d5dd4fbbc32a830ead91a, type: 3}
         BeatSigns: 010000000200000003000000
-    - rid: 565676037243142503
+    - rid: 565676037243142628
       type: {class: SignDef, ns: Code.Game.Scripts.Battle, asm: Game.Scripts}
       data:
         <Id>k__BackingField: Papper
         Sign: 2
         Sprite: {fileID: 21300000, guid: add44f82197341349826c4c805080923, type: 3}
         BeatSigns: 0100000005000000
-    - rid: 565676037243142504
+    - rid: 565676037243142629
       type: {class: SignDef, ns: Code.Game.Scripts.Battle, asm: Game.Scripts}
       data:
         <Id>k__BackingField: Rock
         Sign: 1
         Sprite: {fileID: 21300000, guid: 670f50645234fa34c86ca6b4f51a3773, type: 3}
         BeatSigns: 0300000005000000
-    - rid: 565676037243142505
+    - rid: 565676037243142630
       type: {class: SignDef, ns: Code.Game.Scripts.Battle, asm: Game.Scripts}
       data:
         <Id>k__BackingField: Scissors

@@ -1,6 +1,7 @@
 using System.Threading;
 using Code.UI;
 using Cysharp.Threading.Tasks;
+using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace Code.Game.Scripts.GameStates
@@ -21,9 +22,9 @@ namespace Code.Game.Scripts.GameStates
             return panel.ShowDialogueAsync(dialogue, token);
         }
 
-        public UniTask PrintByLine(params string[] lines) => PrintByLine(CancellationToken.None, lines);
+        public UniTask PrintByLine(AudioSource audioSource, params string[] lines) => PrintByLine(CancellationToken.None, audioSource, lines);
 
-        public async UniTask PrintByLine(CancellationToken token, params string[] lines)
+        public async UniTask PrintByLine(CancellationToken token, AudioSource audioSource, params string[] lines)
         {
             foreach (var line in lines)
             {
@@ -31,6 +32,7 @@ namespace Code.Game.Scripts.GameStates
 
                 var dialogue = Dialogue.Create().SetSpeaker(SpeakerName).Clear().Text(line);
                 var showing = true;
+                audioSource.Play();
                 panel.ShowDialogueAsync(dialogue, token)
                     .ContinueWith(() => showing = false)
                     .Forget();

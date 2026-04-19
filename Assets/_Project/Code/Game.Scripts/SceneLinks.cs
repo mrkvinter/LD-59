@@ -5,6 +5,7 @@ using Game.Utilities;
 using TMPro;
 using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
 
@@ -63,6 +64,7 @@ namespace Code.Game.Scripts
         public CanvasGroup BlackScreen;
         public CanvasGroup KvinterGames;
         public CanvasGroup Alarm;
+        public CanvasGroup ThanksForPlaying;
         
         [Header("Events")] public bool FastMode;
         public GameObject InputBlocker;
@@ -74,6 +76,10 @@ namespace Code.Game.Scripts
         public DialoguePanel DialoguePanel;
 
         [Header("First_Person_Event")]
+        public AudioSource Person1AudioSource;
+        public AudioSource Person2AudioSource;
+        public AudioSource Person3AudioSource;
+
         public GameObject FirstPersonEvent;
         public GameObject SecondPersonEvent;
         public GameObject ThirdPersonEvent;

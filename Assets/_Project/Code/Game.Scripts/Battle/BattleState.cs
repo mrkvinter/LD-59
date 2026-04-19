@@ -36,6 +36,7 @@ namespace Code.Game.Scripts.Battle
         public int WinStones = 3;
 
         public bool NotStartNextRound = false;
+        public bool IsPickingCard;
 
         public BattleState()
         {
@@ -89,7 +90,7 @@ namespace Code.Game.Scripts.Battle
 
             // AddItem(ItemDefType.BrokenGlass);
             // AddItem(ItemDefType.Knife);
-            AddItem(ItemDefType.Pills);
+            AddItem(ItemDefType.ToiletPaper);
             AddItem(ItemDefType.Pills);
             // AddItem(ItemDefType.SpareSignalFlare);
             // AddItem(ItemDefType.Whetstone);
@@ -206,6 +207,7 @@ namespace Code.Game.Scripts.Battle
 
         private void OnCardSelect(CardView cardView) => UniTask.Create(async () =>
         {
+            if (IsPickingCard) return;
             Object.Destroy(cardView.gameObject);
             SceneLinks.Hands.SetActive(true);
             SceneLinks.GameUI.SetActive(false);
@@ -298,6 +300,48 @@ namespace Code.Game.Scripts.Battle
 
             NextTurn();
         });
+
+        public async UniTask<CardView> PickCardAsync()
+        {
+            IsPickingCard = true;
+
+            var tcs = new UniTaskCompletionSource<CardView>();
+            var unsubs = new List<Action>();
+
+            foreach (var card in Player.CardsHand.Concat(EnemyPlayer.CardsHand))
+            {
+                var view = card.View;
+                if (view == null) continue;
+
+                Action handler = () => tcs.TrySetResult(view);
+                view.OnClick += handler;
+                unsubs.Add(() => view.OnClick -= handler);
+            }
+
+            try
+            {
+                return await tcs.Task;
+            }
+            finally
+            {
+                foreach (var unsub in unsubs) unsub();
+                IsPickingCard = false;
+            }
+        }
+
+        public void DuplicateCardForPlayer(Card source)
+        {
+            if (source == null) return;
+
+            var clone = new Card(source.SignDef);
+            Player.CardsHand.Add(clone);
+
+            var cardView = Object.Instantiate(SceneLinks.CardPrefab);
+            SceneLinks.PlayerCardsParent.Add(cardView);
+            clone.SetView(cardView);
+
+            cardView.OnClick += () => OnCardSelect(cardView);
+        }
 
         public void UpdateAll()
         {

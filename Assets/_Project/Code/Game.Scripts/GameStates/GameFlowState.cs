@@ -73,6 +73,18 @@ namespace Code.Game.Scripts.GameStates
             return baseDeck.OrderBy(x => Guid.NewGuid()).ToList();
         }
 
+        private List<DefRef<SignDef>> GetThirdDeck()
+        {
+            var baseDeck = new List<DefRef<SignDef>>();
+            baseDeck.AddRange(Enumerable.Repeat(SignDefType.Rock, 2));
+            baseDeck.AddRange(Enumerable.Repeat(SignDefType.Papper, 2));
+            baseDeck.AddRange(Enumerable.Repeat(SignDefType.Scissors, 2));
+            baseDeck.AddRange(Enumerable.Repeat(SignDefType.Goat, 3));
+            baseDeck.AddRange(Enumerable.Repeat(SignDefType.F, 1));
+
+            return baseDeck.OrderBy(x => Guid.NewGuid()).ToList();
+        }
+
         private List<DefRef<ItemDef>> baseItems => new()
         {
             ItemDefType.Knife,
@@ -80,12 +92,12 @@ namespace Code.Game.Scripts.GameStates
             ItemDefType.Knife,
             ItemDefType.Pills,
             ItemDefType.Pills,
-            ItemDefType.SpareSignalFlare,
             ItemDefType.FortuneCookie,
             ItemDefType.FortuneCookie,
-            ItemDefType.BrokenGlass,
 
-            // ItemDefType.Whetstone,
+            ItemDefType.SpareSignalFlare,
+            ItemDefType.BrokenGlass,
+            ItemDefType.ToiletPaper,
         };
 
         public void Initialize()
@@ -107,6 +119,9 @@ namespace Code.Game.Scripts.GameStates
 
         public async UniTask GameOverAsync()
         {
+            await sceneLinks.BlackScreen.DOFade(1, 1f);
+            await sceneLinks.HandStatefulObject.SetStateAsync("Default");
+            await sceneLinks.ThanksForPlaying.DOFade(1, 1f);
         }
 
         public async UniTask FirstEvent()
@@ -117,8 +132,8 @@ namespace Code.Game.Scripts.GameStates
 
             battleState.OnGameEnd += OnBattleEnd;
 
-            var enemyPlayer = new Battle.Player(2, GetTutorialEnemyDeck());
-            var player = new Battle.Player(2, GetTutorialPlayerDeck());
+            var enemyPlayer = new Battle.Player(3, GetTutorialEnemyDeck());
+            var player = new Battle.Player(3, GetTutorialPlayerDeck());
             battleState.ItemsPerRound = 0;
             battleState.CardsPerRound = 4;
             battleState.StartBattle(player, enemyPlayer, baseItems);
@@ -161,16 +176,13 @@ namespace Code.Game.Scripts.GameStates
             if (!sceneLinks.FastMode)
             {
                 await dPrinter.PrintByLine(
-                    "Oh, looks like we've got a newcomer here.",
-
-                    "If you want to survive here, you'll have to get your hands on some Signal Flares.",
-
-                    "They give off light and scare away all kinds of creatures around here.",
-
-                    "I happen to have a few; we can play.",
-
-                    "But remember, we play until the very end, and whoever loses will die in the dark.",
+                    sceneLinks.Person1AudioSource,
                     
+                    "Oh, looks like we've got a newcomer here.",
+                    "If you want to survive here, you'll have to get your hands on some Signal Flares.",
+                    "They give off light and scare away all kinds of creatures around here.",
+                    "I happen to have a few; we can play.",
+                    "But remember, we play until the very end, and whoever loses will die in the dark.",
                     "Ha-ha-ha."
                 );
             }
@@ -182,6 +194,8 @@ namespace Code.Game.Scripts.GameStates
                 await UniTask.Delay(TimeSpan.FromSeconds(0.5f));
 
                 await dPrinter.PrintByLine(
+                    sceneLinks.Person1AudioSource,
+                    
                     "We're going to play Rock, Paper, Scissors, Goat, F@#k.",
                     "Ever heard of it? It's popular around here.",
                     "Your goal: to get Signal Flares.",
@@ -192,11 +206,11 @@ namespace Code.Game.Scripts.GameStates
 
                 sceneLinks.VC_LookAtEnemy.Priority.Enabled = false;
                 sceneLinks.VC_LookAtInstruction.Priority.Enabled = true;
-                await dPrinter.PrintByLine("You can check the rules here");
+                await dPrinter.PrintByLine(sceneLinks.Person1AudioSource,"You can check the rules here");
 
                 sceneLinks.VC_LookAtInstruction.Priority.Enabled = false;
                 sceneLinks.VC_LookAtFlaresCard.Priority.Enabled = true;
-                await dPrinter.PrintByLine(
+                await dPrinter.PrintByLine(sceneLinks.Person1AudioSource,
                     "Here are my signal flares",
                     "When one of us runs out of flares, they lose"
                 );
@@ -228,7 +242,7 @@ namespace Code.Game.Scripts.GameStates
             sceneLinks.DialoguePanel.gameObject.SetActive(true);
 
             sceneLinks.VC_LookAtPlayerStones.Priority.Enabled = true;
-            await dPrinter.PrintByLine(
+            await dPrinter.PrintByLine(sceneLinks.Person1AudioSource,
                 "You have more stones, this round is yours"
             );
 
@@ -242,7 +256,7 @@ namespace Code.Game.Scripts.GameStates
             sceneLinks.VC_LookAtPlayerStones.Priority.Enabled = false;
             battleState.StartNewRound();
 
-            await dPrinter.PrintByLine(
+            await dPrinter.PrintByLine(sceneLinks.Person1AudioSource,
                 "Let’s make the game a little more complicated.",
                 "Now, items will be handed out each round.",
                 "I’ve also added a couple of cards to make the game more interesting.",
@@ -263,7 +277,7 @@ namespace Code.Game.Scripts.GameStates
                     sceneLinks.InputBlocker.gameObject.SetActive(true);
                     sceneLinks.DialoguePanel.gameObject.SetActive(true);
                     sceneLinks.VC_LookAtEnemy.Priority.Enabled = true;
-                    await dPrinter.PrintByLine("Damn, that can't be.");
+                    await dPrinter.PrintByLine(sceneLinks.Person1AudioSource, "Damn, that can't be.");
                     dPrinter.Clear();
 
                     sceneLinks.InputBlocker.gameObject.SetActive(true);
@@ -280,7 +294,7 @@ namespace Code.Game.Scripts.GameStates
                 {
                     sceneLinks.InputBlocker.gameObject.SetActive(true);
                     sceneLinks.DialoguePanel.gameObject.SetActive(true);
-                    await dPrinter.PrintByLine("You had no chance.");
+                    await dPrinter.PrintByLine(sceneLinks.Person1AudioSource, "You had no chance.");
                     G.Resolve<IGameDirector>().RestartGame();
                 }
             });
@@ -288,6 +302,7 @@ namespace Code.Game.Scripts.GameStates
 
         public async UniTask SecondEvent()
         {
+            await sceneLinks.BlackScreen.DOFade(1, 1f);
             var dPrinter = new DialoguePrinter(sceneLinks.DialoguePanel);
 
             battleState.OnGameEnd += OnBattleEnd;
@@ -295,7 +310,7 @@ namespace Code.Game.Scripts.GameStates
             sceneLinks.MainLight.intensity = 0;
             await sceneLinks.HandStatefulObject.SetStateAsync("Default");
 
-            var enemyPlayer = new Battle.Player(4, GetSecondDeck());
+            var enemyPlayer = new Battle.Player(3, GetSecondDeck());
             var player = new Battle.Player(3, GetBaseDeck());
             battleState.ItemsPerRound = 2;
             battleState.CardsPerRound = 5;
@@ -308,19 +323,21 @@ namespace Code.Game.Scripts.GameStates
             sceneLinks.Table.transform.position = sceneLinks.PointTable_1.transform.position;
             if (sceneLinks.FastMode)
             {
+                sceneLinks.BlackScreen.alpha = 0;
                 sceneLinks.Table.transform.position = sceneLinks.PointTable_2.transform.position;
                 sceneLinks.MainLight.intensity = mainLightIntensity;
                 sceneLinks.HandStatefulObject.SetState("Hidden");
             }
             else
             {
+                sceneLinks.BlackScreen.DOFade(0, 1f);
                 await sceneLinks.Table.transform.DOMove(sceneLinks.PointTable_2.transform.position, 8f)
                     .SetEase(Ease.Linear);
                 sceneLinks.MainLight.DOIntensity(mainLightIntensity, 2f);
                 await sceneLinks.HandStatefulObject.SetStateAsync("Hidden");
             }
 
-            await dPrinter.PrintByLine("Oh… you want to play with me? Um… okay, let’s try...");
+            await dPrinter.PrintByLine(sceneLinks.Person2AudioSource, "Oh… you want to play with me? Um… okay, let’s try...");
             sceneLinks.VC_LookAtEnemy.Priority.Enabled = false;
             sceneLinks.InputBlocker.gameObject.SetActive(false);
             sceneLinks.DialoguePanel.gameObject.SetActive(false);
@@ -334,9 +351,11 @@ namespace Code.Game.Scripts.GameStates
                 {
                     sceneLinks.InputBlocker.gameObject.SetActive(true);
                     sceneLinks.DialoguePanel.gameObject.SetActive(true);
-                    await dPrinter.PrintByLine("I knew this would happen sooner or later...");
+                    await dPrinter.PrintByLine(sceneLinks.Person2AudioSource, "I knew this would happen sooner or later...");
                     sceneLinks.InputBlocker.gameObject.SetActive(true);
                     sceneLinks.DialoguePanel.gameObject.SetActive(true);
+
+                    battleState.OnExit();
 
                     ThirdEvent().Forget();
                 }
@@ -344,7 +363,7 @@ namespace Code.Game.Scripts.GameStates
                 {
                     sceneLinks.InputBlocker.gameObject.SetActive(true);
                     sceneLinks.DialoguePanel.gameObject.SetActive(true);
-                    await dPrinter.PrintByLine("Oh my gosh… I didn’t mean to. I’m so sorry...");
+                    await dPrinter.PrintByLine(sceneLinks.Person2AudioSource, "Oh my gosh… I didn’t mean to. I’m so sorry...");
                     G.Resolve<IGameDirector>().RestartGame();
                 }
             });
@@ -352,6 +371,8 @@ namespace Code.Game.Scripts.GameStates
 
         public async UniTask ThirdEvent()
         {
+            await sceneLinks.BlackScreen.DOFade(1, 1f);
+            sceneLinks.SecondPersonEvent.gameObject.SetActive(false);
             var dPrinter = new DialoguePrinter(sceneLinks.DialoguePanel);
 
             battleState.OnGameEnd += OnBattleEnd;
@@ -359,9 +380,9 @@ namespace Code.Game.Scripts.GameStates
             sceneLinks.MainLight.intensity = 0;
             await sceneLinks.HandStatefulObject.SetStateAsync("Default");
 
-            var enemyPlayer = new Battle.Player(5, GetSecondDeck());
+            var enemyPlayer = new Battle.Player(4, GetThirdDeck());
             var player = new Battle.Player(3, GetBaseDeck());
-            battleState.ItemsPerRound = 2;
+            battleState.ItemsPerRound = 3;
             battleState.CardsPerRound = 5;
             battleState.StartBattle(player, enemyPlayer, baseItems);
 
@@ -372,12 +393,14 @@ namespace Code.Game.Scripts.GameStates
             sceneLinks.Table.transform.position = sceneLinks.PointTable_1.transform.position;
             if (sceneLinks.FastMode)
             {
+                sceneLinks.BlackScreen.alpha = 0;
                 sceneLinks.Table.transform.position = sceneLinks.PointTable_2.transform.position;
                 sceneLinks.MainLight.intensity = mainLightIntensity;
                 sceneLinks.HandStatefulObject.SetState("Hidden");
             }
             else
             {
+                sceneLinks.BlackScreen.DOFade(0, 1f);
                 await sceneLinks.Table.transform.DOMove(sceneLinks.PointTable_2.transform.position, 8f)
                     .SetEase(Ease.Linear);
                 sceneLinks.MainLight.DOIntensity(mainLightIntensity, 2f);
@@ -385,7 +408,7 @@ namespace Code.Game.Scripts.GameStates
             }
 
             sceneLinks.DialoguePanel.gameObject.SetActive(true);
-            await dPrinter.PrintByLine("Go ahead, surprise me. Though I doubt you'll manage it.");
+            await dPrinter.PrintByLine(sceneLinks.Person3AudioSource, "Go ahead, surprise me. Though I doubt you'll manage it.");
             sceneLinks.VC_LookAtEnemy.Priority.Enabled = false;
             sceneLinks.InputBlocker.gameObject.SetActive(false);
             sceneLinks.DialoguePanel.gameObject.SetActive(false);
@@ -401,6 +424,7 @@ namespace Code.Game.Scripts.GameStates
                     sceneLinks.DialoguePanel.gameObject.SetActive(true);
                     sceneLinks.VC_LookAtEnemy.Priority.Enabled = true;
                     await dPrinter.PrintByLine(
+                        sceneLinks.Person3AudioSource,
                         "No way, that's my game!"
                     );
 
@@ -412,7 +436,7 @@ namespace Code.Game.Scripts.GameStates
                 {
                     sceneLinks.InputBlocker.gameObject.SetActive(true);
                     sceneLinks.DialoguePanel.gameObject.SetActive(true);
-                    await dPrinter.PrintByLine("What was that all about? Seriously?");
+                    await dPrinter.PrintByLine(sceneLinks.Person3AudioSource, "What was that all about? Seriously?");
                     G.Resolve<IGameDirector>().RestartGame();
                 }
             });

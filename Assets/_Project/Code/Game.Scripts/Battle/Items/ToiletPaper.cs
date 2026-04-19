@@ -1,4 +1,3 @@
-using System;
 using Cysharp.Threading.Tasks;
 
 namespace Code.Game.Scripts.Battle.Items
@@ -9,21 +8,22 @@ namespace Code.Game.Scripts.Battle.Items
 
         public override async UniTask OnUse(BattleState battleState, Player player)
         {
-            BlockSameItemsWithinRound(battleState, battleState.Player);
+            BlockSameItemsWithinRound(battleState, player);
             await MoveToCenter(battleState.SceneLinks);
+            await UniTask.Delay(500);
+            MoveDown().Forget();
+            
+            battleState.Player.Items.ForEach(e => e.IsSelectable = false);
+            battleState.SceneLinks.ItemDescription.Show("", "Select a card to duplicate");
 
-            battleState.ScoreForPaper *= 2;
-            battleState.OnTurnEnd += OnRoundEnd;
-
-            await UniTask.Delay(TimeSpan.FromSeconds(0.5f));
-            await MoveDown();
-
-
-            void OnRoundEnd()
+            var pickedView = await battleState.PickCardAsync();
+            if (pickedView != null && pickedView.Card != null)
             {
-                battleState.ScoreForScissors = 1;
-                battleState.OnTurnEnd -= OnRoundEnd;
+                battleState.DuplicateCardForPlayer(pickedView.Card);
             }
+
+            battleState.Player.Items.ForEach(e => e.IsSelectable = true);
+            battleState.SceneLinks.ItemDescription.Hide();
         }
     }
 }

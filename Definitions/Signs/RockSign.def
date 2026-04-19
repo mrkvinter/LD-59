@@ -5,6 +5,10 @@
     "guid": "670f50645234fa34c86ca6b4f51a3773",
     "fileID": 21300000
   },
+  "Material": {
+    "guid": "985563fb65081394c83b47c650f28bc7",
+    "fileID": 2100000
+  },
   "BeatSigns": [
     3,
     5

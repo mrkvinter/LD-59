@@ -15,7 +15,8 @@ namespace Code.Game.Scripts
         public GameObject Hands;
 
         public CardView CardPrefab;
-        public RectTransform CardsParent;
+        public CardHolder PlayerCardsParent;
+        public CardHolder EnemyCardsParent;
         
         public HandView LeftHandView;
         public HandView RightHandView;

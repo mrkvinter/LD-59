@@ -108,10 +108,18 @@ namespace Code.Game.Scripts.Battle
         {
             foreach (var sign in player.SignsHand)
             {
-                var card = Object.Instantiate(sceneLinks.CardPrefab, sceneLinks.CardsParent);
+                var card = Object.Instantiate(sceneLinks.CardPrefab);
+                sceneLinks.PlayerCardsParent.Add(card);
                 card.SetSign(sign);
                 
                 card.OnClick += () => OnCardSelect(card);
+            }
+            
+            foreach (var sign in enemyPlayer.SignsHand)
+            {
+                var card = Object.Instantiate(sceneLinks.CardPrefab);
+                sceneLinks.EnemyCardsParent.Add(card);
+                card.SetSign(sign);
             }
         }
 

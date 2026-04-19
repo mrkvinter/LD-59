@@ -14,18 +14,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: DefinitionSystem.UnityAdapter::RG.DefinitionSystem.UnityAdapter.DefinitionDatabase
   <Defs>k__BackingField: []
   <Definitions>k__BackingField:
-  - rid: 565676037243142738
-  - rid: 565676037243142739
-  - rid: 565676037243142740
-  - rid: 565676037243142741
-  - rid: 565676037243142742
-  - rid: 565676037243142743
-  - rid: 565676037243142744
-  - rid: 565676037243142745
+  - rid: 565676082329550979
+  - rid: 565676082329550980
+  - rid: 565676082329550981
+  - rid: 565676082329550982
+  - rid: 565676082329550983
+  - rid: 565676082329550984
+  - rid: 565676082329550985
+  - rid: 565676082329550986
   references:
     version: 2
     RefIds:
-    - rid: 565676037243142738
+    - rid: 565676082329550979
       type: {class: ItemDef, ns: Code.Game.Scripts.Battle.Items, asm: Game.Scripts}
       data:
         <Id>k__BackingField: BrokenGlass
@@ -33,50 +33,55 @@ MonoBehaviour:
         Description: 'Reverses the outcome of the next move: a win becomes a loss,
           and a loss becomes a win.'
         Prefab: {fileID: 211301192306214981, guid: d4612ac804f036c4cab2d5b5baa0f92e, type: 3}
-    - rid: 565676037243142739
+    - rid: 565676082329550980
       type: {class: ItemDef, ns: Code.Game.Scripts.Battle.Items, asm: Game.Scripts}
       data:
         <Id>k__BackingField: Knife
         Name: Knife
         Description: Blocks the opponent's "F" sign for 1 turn.
         Prefab: {fileID: 69515242149952780, guid: 15a312a03ba6b024dba70b4cf1b5878b, type: 3}
-    - rid: 565676037243142740
+    - rid: 565676082329550981
       type: {class: GameAppSetting, ns: Game.Main.Settings, asm: Game.Main}
       data:
         <Id>k__BackingField: 
         GameScene: MainScene
-    - rid: 565676037243142741
+    - rid: 565676082329550982
       type: {class: SignDef, ns: Code.Game.Scripts.Battle, asm: Game.Scripts}
       data:
         <Id>k__BackingField: F
         Sign: 5
         Sprite: {fileID: 21300000, guid: 38497ce17def40948bbf48bf9a3775ba, type: 3}
+        Material: {fileID: 2100000, guid: e76ef233b3ff8db4ba7670e40a01f6a9, type: 2}
         BeatSigns: 04000000
-    - rid: 565676037243142742
+    - rid: 565676082329550983
       type: {class: SignDef, ns: Code.Game.Scripts.Battle, asm: Game.Scripts}
       data:
         <Id>k__BackingField: Goat
         Sign: 4
         Sprite: {fileID: 21300000, guid: 96f72008f94d5dd4fbbc32a830ead91a, type: 3}
+        Material: {fileID: 2100000, guid: 0001eeb9508830944967392abdf1862f, type: 2}
         BeatSigns: 010000000200000003000000
-    - rid: 565676037243142743
+    - rid: 565676082329550984
       type: {class: SignDef, ns: Code.Game.Scripts.Battle, asm: Game.Scripts}
       data:
         <Id>k__BackingField: Papper
         Sign: 2
         Sprite: {fileID: 21300000, guid: add44f82197341349826c4c805080923, type: 3}
+        Material: {fileID: 2100000, guid: bece68f402d5c894aaa877b7ed164dc1, type: 2}
         BeatSigns: 0100000005000000
-    - rid: 565676037243142744
+    - rid: 565676082329550985
       type: {class: SignDef, ns: Code.Game.Scripts.Battle, asm: Game.Scripts}
       data:
         <Id>k__BackingField: Rock
         Sign: 1
         Sprite: {fileID: 21300000, guid: 670f50645234fa34c86ca6b4f51a3773, type: 3}
+        Material: {fileID: 2100000, guid: 985563fb65081394c83b47c650f28bc7, type: 2}
         BeatSigns: 0300000005000000
-    - rid: 565676037243142745
+    - rid: 565676082329550986
       type: {class: SignDef, ns: Code.Game.Scripts.Battle, asm: Game.Scripts}
       data:
         <Id>k__BackingField: Scissors
         Sign: 3
         Sprite: {fileID: 21300000, guid: 4753b4078f8c6c542a7a818f2b8187eb, type: 3}
+        Material: {fileID: 2100000, guid: 6d6a496e364c91146a22a440cf25ec4a, type: 2}
         BeatSigns: 0200000005000000

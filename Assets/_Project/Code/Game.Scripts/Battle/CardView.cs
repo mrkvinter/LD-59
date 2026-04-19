@@ -3,13 +3,12 @@ using System.Linq;
 using RG.DefinitionSystem.Core;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 namespace Code.Game.Scripts.Battle
 {
     public class CardView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
     {
-        [SerializeField] private Image spriteRenderer;
+        [SerializeField] private MeshRenderer meshRenderer;
         [SerializeField] private float hoverScale = 1.15f;
 
         public Action OnClick;
@@ -17,6 +16,7 @@ namespace Code.Game.Scripts.Battle
         private Vector3 baseScale;
         
         public Sign SelectedSign { get; private set; }
+        public bool IsSelectable { get; set; } = true;
         
         private void Awake()
         {
@@ -31,15 +31,14 @@ namespace Code.Game.Scripts.Battle
 
             if (signDef == null) 
             {
-                spriteRenderer.gameObject.SetActive(false);
                 return;
             }
-            spriteRenderer.sprite = signDef.Sprite;
-            spriteRenderer.gameObject.SetActive(true);
+            meshRenderer.material = signDef.Material;
         }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
+            if (!IsSelectable) return;
             transform.localScale = baseScale * hoverScale;
         }
 
@@ -50,6 +49,7 @@ namespace Code.Game.Scripts.Battle
 
         public void OnPointerClick(PointerEventData eventData)
         {
+            if (!IsSelectable) return;
             OnClick?.Invoke();
         }
     }

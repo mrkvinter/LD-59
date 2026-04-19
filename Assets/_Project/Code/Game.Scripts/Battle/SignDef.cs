@@ -12,6 +12,7 @@ namespace Code.Game.Scripts.Battle
     {
         public Sign Sign;
         public Sprite Sprite;
+        public Material Material;
         
         public List<Sign> BeatSigns = new();
         

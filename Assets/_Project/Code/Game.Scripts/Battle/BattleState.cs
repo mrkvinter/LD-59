@@ -27,10 +27,10 @@ namespace Code.Game.Scripts.Battle
         public event Action OnRoundEnd;
         public event Action<bool> OnGameEnd;
 
-        public int ScoreMultiplayer = 1;
         public int ScoreForScissors = 1;
         public int ScoreForRock = 1;
         public int ScoreForPaper = 1;
+
         public int ItemsPerRound;
         public int CardsPerRound = 5;
         public int WinStones = 3;
@@ -73,7 +73,7 @@ namespace Code.Game.Scripts.Battle
         {
             player.Items.Remove(item);
             item.IsSelectable = false;
-            await item.OnUse(this);
+            await item.OnUse(this, player);
             itemsService.Release(item);
         }
 
@@ -89,8 +89,8 @@ namespace Code.Game.Scripts.Battle
 
             // AddItem(ItemDefType.BrokenGlass);
             // AddItem(ItemDefType.Knife);
-            // AddItem(ItemDefType.Pills);
-            // AddItem(ItemDefType.Pills);
+            AddItem(ItemDefType.Pills);
+            AddItem(ItemDefType.Pills);
             // AddItem(ItemDefType.SpareSignalFlare);
             // AddItem(ItemDefType.Whetstone);
             // AddItem(ItemDefType.FortuneCookie);
@@ -134,6 +134,9 @@ namespace Code.Game.Scripts.Battle
 
                 StartNewRound();
             }
+
+            Player.Items.ForEach(e => e.BlockedForRound = false);
+            EnemyPlayer.Items.ForEach(e => e.BlockedForRound = false);
 
             EnemyPlayer.SelectSign();
         }
@@ -243,19 +246,17 @@ namespace Code.Game.Scripts.Battle
                 _ => 1
             };
 
-            scoreForRound *= ScoreMultiplayer;
-
             if (winner == Winner.Right)
             {
                 SceneLinks.WinTitle.SetActive(true);
-                Player.WinStones += scoreForRound;
+                Player.WinStones += scoreForRound * Player.ScoreMultiplayer;
                 // EnemyPlayer.ReduceHealth(scoreForRound);
             }
 
             if (winner == Winner.Left)
             {
                 SceneLinks.LoseTitle.SetActive(true);
-                EnemyPlayer.WinStones += scoreForRound;
+                EnemyPlayer.WinStones += scoreForRound * EnemyPlayer.ScoreMultiplayer;
                 // Player.ReduceHealth(scoreForRound);
             }
 

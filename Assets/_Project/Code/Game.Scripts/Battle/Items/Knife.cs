@@ -8,7 +8,7 @@ namespace Code.Game.Scripts.Battle.Items
     {
         private CardView selectedCard;
 
-        public override async UniTask OnUse(BattleState battleState)
+        public override async UniTask OnUse(BattleState battleState, Player player)
         {
             View.gameObject.SetActive(false);
             IsSelectable = false;

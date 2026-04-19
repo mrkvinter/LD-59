@@ -6,7 +6,7 @@ namespace Code.Game.Scripts.Battle.Items
     {
         public override IAffectGame GetAffectGame() => new BrokenGlassesAffect();
 
-        public override async UniTask OnUse(BattleState battleState)
+        public override async UniTask OnUse(BattleState battleState, Player player)
         {
             battleState.AddAfffect(new BrokenGlassesAffect());
             await MoveDown();

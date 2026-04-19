@@ -21,6 +21,8 @@ namespace Code.Game.Scripts.Battle
 
         public int WinStones { get; set; } = 0;
 
+        public int ScoreMultiplayer = 1;
+        
         public IEnumerable<Card> AvailableSigns => 
             CardsHand.Where(x => Affects.All(a => a.IsSignAvailable(x)));
         

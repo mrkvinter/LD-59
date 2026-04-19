@@ -19,6 +19,11 @@ namespace Code.Game.Scripts.GameStates
         private SceneLinks sceneLinks;
         private float mainLightIntensity;
 
+        private List<string> lorePhrases = new()
+        {
+            "Сколько лет уже "
+        };
+
         public GameFlowState()
         {
             battleState = new BattleState();
@@ -71,11 +76,16 @@ namespace Code.Game.Scripts.GameStates
         private List<DefRef<ItemDef>> baseItems => new()
         {
             ItemDefType.Knife,
+            ItemDefType.Knife,
+            ItemDefType.Knife,
             ItemDefType.Pills,
             ItemDefType.Pills,
             ItemDefType.SpareSignalFlare,
-            ItemDefType.Whetstone,
             ItemDefType.FortuneCookie,
+            ItemDefType.FortuneCookie,
+            ItemDefType.BrokenGlass,
+
+            // ItemDefType.Whetstone,
         };
 
         public void Initialize()
@@ -89,8 +99,9 @@ namespace Code.Game.Scripts.GameStates
             sceneLinks.MainLight.gameObject.SetActive(true);
             sceneLinks.DialoguePanel.gameObject.SetActive(false);
 
+            var rumble = G.AudioService.PlayLoop("rumble_loop");
+            rumble.AudioSource.volume = 0.6f;
 
-            G.AudioService.PlayLoop("rumble_loop");
             FirstEvent().Forget();
         }
 
@@ -100,6 +111,8 @@ namespace Code.Game.Scripts.GameStates
 
         public async UniTask FirstEvent()
         {
+            sceneLinks.BlackScreen.alpha = 1;
+
             var dPrinter = new DialoguePrinter(sceneLinks.DialoguePanel);
 
             battleState.OnGameEnd += OnBattleEnd;
@@ -114,6 +127,22 @@ namespace Code.Game.Scripts.GameStates
             sceneLinks.VC_LookAtEnemy.Priority.Enabled = true;
             sceneLinks.FirstPersonEvent.gameObject.SetActive(true);
             sceneLinks.Table.transform.position = sceneLinks.PointTable_1.transform.position;
+            if (!sceneLinks.FastMode)
+            {
+                await UniTask.Delay(TimeSpan.FromSeconds(1f));
+                await sceneLinks.KvinterGames.DOFade(1, 0.5f);
+                await UniTask.Delay(TimeSpan.FromSeconds(2f));
+                await sceneLinks.KvinterGames.DOFade(0, 0.5f);
+                await sceneLinks.Alarm.DOFade(1, 0.5f);
+                await UniTask.Delay(TimeSpan.FromSeconds(2));
+                await sceneLinks.Alarm.DOFade(0, 0.5f);
+                await sceneLinks.BlackScreen.DOFade(0, 4f);
+            }
+            else
+            {
+                sceneLinks.BlackScreen.alpha = 0;
+            }
+
             if (sceneLinks.FastMode)
             {
                 sceneLinks.Table.transform.position = sceneLinks.PointTable_2.transform.position;
@@ -132,12 +161,17 @@ namespace Code.Game.Scripts.GameStates
             if (!sceneLinks.FastMode)
             {
                 await dPrinter.PrintByLine(
-                    "О, смотрю у нас новенький вылез.",
-                    "Если хочешь тут выжить, то придется тебе раздобыть Сигнальный Огни.",
-                    "Они дают свет и отпугивают разных тварей вокруг",
-                    "У меня как раз есть несколько, можем сыграть.",
-                    "Но помни, играем до последнего, а кто поиграл, сдохнет в темноте.",
-                    "Ха-ха-ха."
+                    "Oh, looks like we've got a newcomer here.",
+
+                    "If you want to survive here, you'll have to get your hands on some Signal Flares.",
+
+                    "They give off light and scare away all kinds of creatures around here.",
+
+                    "I happen to have a few; we can play.",
+
+                    "But remember, we play until the very end, and whoever loses will die in the dark.",
+                    
+                    "Ha-ha-ha."
                 );
             }
 
@@ -148,26 +182,30 @@ namespace Code.Game.Scripts.GameStates
                 await UniTask.Delay(TimeSpan.FromSeconds(0.5f));
 
                 await dPrinter.PrintByLine(
-                    "Играть будем в камень ножница бумага коза фак",
-                    "Слышал о такой? Она тут популярна",
-                    "Играем до трех побед");
+                    "We're going to play Rock, Paper, Scissors, Goat, F@#k.",
+                    "Ever heard of it? It's popular around here.",
+                    "Your goal: to get Signal Flares.",
+                    "3 stones = 1 Signal Flare. Either you or I will get them.",
+                    "But here's the thing: every time you lose, I'll take them from you.",
+                    "Don’t let your guard down. I can also determine the winner based on the number of stones."
+                    );
 
                 sceneLinks.VC_LookAtEnemy.Priority.Enabled = false;
                 sceneLinks.VC_LookAtInstruction.Priority.Enabled = true;
-                await dPrinter.PrintByLine("Правила можешь глянуть тут");
+                await dPrinter.PrintByLine("You can check the rules here");
 
                 sceneLinks.VC_LookAtInstruction.Priority.Enabled = false;
                 sceneLinks.VC_LookAtFlaresCard.Priority.Enabled = true;
                 await dPrinter.PrintByLine(
-                    "Тут мои сигнальные огни",
-                    "Когда у кого-то не останется огней, тот проиграл"
+                    "Here are my signal flares",
+                    "When one of us runs out of flares, they lose"
                 );
 
                 sceneLinks.VC_LookAtFlaresCard.Priority.Enabled = false;
                 sceneLinks.VC_LookAtEnemy.Priority.Enabled = true;
             }
 
-            await dPrinter.PrintDialogue(Dialogue.Create().Clear().Text("Все понял? Можем начинать.")
+            await dPrinter.PrintDialogue(Dialogue.Create().Clear().Text("Got it? Let’s get started.")
                 .Delay(Dialogue.LongDelay).Clear());
             sceneLinks.DialoguePanel.gameObject.SetActive(false);
 
@@ -191,13 +229,13 @@ namespace Code.Game.Scripts.GameStates
 
             sceneLinks.VC_LookAtPlayerStones.Priority.Enabled = true;
             await dPrinter.PrintByLine(
-                "Ты набрал больше камней, этот раунд за тобой"
+                "You have more stones, this round is yours"
             );
 
 
             player.ReplaceBag(GetBaseDeck());
             enemyPlayer.ReplaceBag(GetBaseDeck());
-            battleState.ItemsPerRound = 2;
+            battleState.ItemsPerRound = 3;
             battleState.CardsPerRound = 5;
             battleState.NotStartNextRound = false;
 
@@ -205,10 +243,10 @@ namespace Code.Game.Scripts.GameStates
             battleState.StartNewRound();
 
             await dPrinter.PrintByLine(
-                "Давай немного усложним игру",
-                "Теперь каждый раунд будут выдаваться предметы",
-                "Так же я добавил пару карт, чтобы сделать игру интереснее",
-                "Глянь в инструкции, чтобы понять, как они работают."
+                "Let’s make the game a little more complicated.",
+                "Now, items will be handed out each round.",
+                "I’ve also added a couple of cards to make the game more interesting.",
+                "Check the instructions to see how they work."
             );
 
             dPrinter.Clear();
@@ -224,11 +262,15 @@ namespace Code.Game.Scripts.GameStates
                 {
                     sceneLinks.InputBlocker.gameObject.SetActive(true);
                     sceneLinks.DialoguePanel.gameObject.SetActive(true);
-                    await dPrinter.PrintByLine("Черт, не может быть");
+                    sceneLinks.VC_LookAtEnemy.Priority.Enabled = true;
+                    await dPrinter.PrintByLine("Damn, that can't be.");
+                    dPrinter.Clear();
+
                     sceneLinks.InputBlocker.gameObject.SetActive(true);
                     sceneLinks.DialoguePanel.gameObject.SetActive(true);
 
                     sceneLinks.FirstPersonEvent.gameObject.SetActive(false);
+                    
 
                     battleState.OnExit();
 
@@ -238,7 +280,7 @@ namespace Code.Game.Scripts.GameStates
                 {
                     sceneLinks.InputBlocker.gameObject.SetActive(true);
                     sceneLinks.DialoguePanel.gameObject.SetActive(true);
-                    await dPrinter.PrintByLine("У тебя не было шансов");
+                    await dPrinter.PrintByLine("You had no chance.");
                     G.Resolve<IGameDirector>().RestartGame();
                 }
             });
@@ -249,6 +291,9 @@ namespace Code.Game.Scripts.GameStates
             var dPrinter = new DialoguePrinter(sceneLinks.DialoguePanel);
 
             battleState.OnGameEnd += OnBattleEnd;
+            
+            sceneLinks.MainLight.intensity = 0;
+            await sceneLinks.HandStatefulObject.SetStateAsync("Default");
 
             var enemyPlayer = new Battle.Player(4, GetSecondDeck());
             var player = new Battle.Player(3, GetBaseDeck());
@@ -307,6 +352,70 @@ namespace Code.Game.Scripts.GameStates
 
         public async UniTask ThirdEvent()
         {
+            var dPrinter = new DialoguePrinter(sceneLinks.DialoguePanel);
+
+            battleState.OnGameEnd += OnBattleEnd;
+
+            sceneLinks.MainLight.intensity = 0;
+            await sceneLinks.HandStatefulObject.SetStateAsync("Default");
+
+            var enemyPlayer = new Battle.Player(5, GetSecondDeck());
+            var player = new Battle.Player(3, GetBaseDeck());
+            battleState.ItemsPerRound = 2;
+            battleState.CardsPerRound = 5;
+            battleState.StartBattle(player, enemyPlayer, baseItems);
+
+            sceneLinks.ThirdPersonEvent.gameObject.SetActive(true);
+            sceneLinks.InputBlocker.gameObject.SetActive(true);
+            sceneLinks.VC_LookAtEnemy.Priority.Enabled = true;
+
+            sceneLinks.Table.transform.position = sceneLinks.PointTable_1.transform.position;
+            if (sceneLinks.FastMode)
+            {
+                sceneLinks.Table.transform.position = sceneLinks.PointTable_2.transform.position;
+                sceneLinks.MainLight.intensity = mainLightIntensity;
+                sceneLinks.HandStatefulObject.SetState("Hidden");
+            }
+            else
+            {
+                await sceneLinks.Table.transform.DOMove(sceneLinks.PointTable_2.transform.position, 8f)
+                    .SetEase(Ease.Linear);
+                sceneLinks.MainLight.DOIntensity(mainLightIntensity, 2f);
+                await sceneLinks.HandStatefulObject.SetStateAsync("Hidden");
+            }
+
+            sceneLinks.DialoguePanel.gameObject.SetActive(true);
+            await dPrinter.PrintByLine("Go ahead, surprise me. Though I doubt you'll manage it.");
+            sceneLinks.VC_LookAtEnemy.Priority.Enabled = false;
+            sceneLinks.InputBlocker.gameObject.SetActive(false);
+            sceneLinks.DialoguePanel.gameObject.SetActive(false);
+
+
+            void OnBattleEnd(bool playerWon) => UniTask.Create(async () =>
+            {
+                battleState.OnGameEnd -= OnBattleEnd;
+
+                if (playerWon)
+                {
+                    sceneLinks.InputBlocker.gameObject.SetActive(true);
+                    sceneLinks.DialoguePanel.gameObject.SetActive(true);
+                    sceneLinks.VC_LookAtEnemy.Priority.Enabled = true;
+                    await dPrinter.PrintByLine(
+                        "No way, that's my game!"
+                    );
+
+                    battleState.OnExit();
+
+                    await GameOverAsync();
+                }
+                else
+                {
+                    sceneLinks.InputBlocker.gameObject.SetActive(true);
+                    sceneLinks.DialoguePanel.gameObject.SetActive(true);
+                    await dPrinter.PrintByLine("What was that all about? Seriously?");
+                    G.Resolve<IGameDirector>().RestartGame();
+                }
+            });
         }
     }
 }

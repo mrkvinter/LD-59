@@ -50,4 +50,7 @@ MonoBehaviour:
   - Name: rumble_loop
     Clips:
     - {fileID: 8300000, guid: c981b04abd43f7946b8c6b2534c5d5c9, type: 3}
+  - Name: pills_effect
+    Clips:
+    - {fileID: 8300000, guid: f66e9a0b48fdfb04691aa9ae978700e3, type: 3}
   mixerGroups: []

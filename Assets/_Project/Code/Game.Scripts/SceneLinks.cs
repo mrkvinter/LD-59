@@ -59,6 +59,10 @@ namespace Code.Game.Scripts
         // public CinemachineVirtualCameraBase VC_LookAtEnemyStones;
         public CinemachineVirtualCameraBase VC_LookAtPlayerStones;
 
+        [Header("Start Games")]
+        public CanvasGroup BlackScreen;
+        public CanvasGroup KvinterGames;
+        public CanvasGroup Alarm;
         
         [Header("Events")] public bool FastMode;
         public GameObject InputBlocker;
@@ -72,5 +76,6 @@ namespace Code.Game.Scripts
         [Header("First_Person_Event")]
         public GameObject FirstPersonEvent;
         public GameObject SecondPersonEvent;
+        public GameObject ThirdPersonEvent;
     }
 }

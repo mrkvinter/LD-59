@@ -24,7 +24,7 @@ namespace Code.Game.Scripts.Battle.Items
             if (View != null) View.Item = this;
         }
         
-        public virtual UniTask OnUse(BattleState battleState) => UniTask.CompletedTask;
+        public virtual UniTask OnUse(BattleState battleState, Player player) => UniTask.CompletedTask;
 
         protected async UniTask MoveToCenter(SceneLinks SceneLinks)
         {

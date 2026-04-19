@@ -8,7 +8,7 @@ namespace Code.Game.Scripts.Battle.Items
         private const string DefaultStateName = "Default";
         private const string ShowingStateName = "Show";
 
-        public override async UniTask OnUse(BattleState battleState)
+        public override async UniTask OnUse(BattleState battleState, Player player)
         {
             await MoveToCenter(battleState.SceneLinks);
             await UniTask.Delay(TimeSpan.FromSeconds(0.5f));

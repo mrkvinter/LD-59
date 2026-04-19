@@ -7,7 +7,7 @@ namespace Code.Game.Scripts.Battle.Items
     {
         public override bool IsBigItem => true;
 
-        public override async UniTask OnUse(BattleState battleState)
+        public override async UniTask OnUse(BattleState battleState, Player player)
         {
             BlockSameItemsWithinRound(battleState, battleState.Player);
             await MoveToCenter(battleState.SceneLinks);

@@ -5,12 +5,14 @@ namespace Code.Game.Scripts.Battle.Items
 {
     public class SpareSignalFlare : Item
     {
+        public override bool IsBigItem => true;
+
         public override async UniTask OnUse(BattleState battleState)
         {
             await MoveToCenter(battleState.SceneLinks);
             await UniTask.Delay(TimeSpan.FromSeconds(0.5f));
             battleState.Player.AddHealth(1);
-            battleState.UpdateSignalFlares();
+            battleState.UpdateAll();
             await MoveDown();
         }
     }

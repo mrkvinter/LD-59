@@ -29,6 +29,7 @@ namespace Code.Game.Scripts.Battle.Items
             if (def.Id == ItemDefType.FortuneCookie) return new FortuneCookie();
             if (def.Id == ItemDefType.Whetstone) return new Whetstone();
             if (def.Id == ItemDefType.SpareSignalFlare) return new SpareSignalFlare();
+            if (def.Id == ItemDefType.ToiletPaper) return new ToiletPaper();
             
             return null;
         }

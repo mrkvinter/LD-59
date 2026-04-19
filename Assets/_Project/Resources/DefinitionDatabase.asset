@@ -14,79 +14,86 @@ MonoBehaviour:
   m_EditorClassIdentifier: DefinitionSystem.UnityAdapter::RG.DefinitionSystem.UnityAdapter.DefinitionDatabase
   <Defs>k__BackingField: []
   <Definitions>k__BackingField:
-  - rid: 565676087205953933
-  - rid: 565676087205953934
-  - rid: 565676087205953935
-  - rid: 565676087205953936
-  - rid: 565676087205953937
-  - rid: 565676087205953938
-  - rid: 565676087205953939
-  - rid: 565676087205953940
-  - rid: 565676087205953941
-  - rid: 565676087205953942
-  - rid: 565676087205953943
-  - rid: 565676087205953944
-  - rid: 565676087205953945
+  - rid: 565676087205954101
+  - rid: 565676087205954102
+  - rid: 565676087205954103
+  - rid: 565676087205954104
+  - rid: 565676087205954105
+  - rid: 565676087205954106
+  - rid: 565676087205954107
+  - rid: 565676087205954108
+  - rid: 565676087205954109
+  - rid: 565676087205954110
+  - rid: 565676087205954111
+  - rid: 565676087205954112
+  - rid: 565676087205954113
   references:
     version: 2
     RefIds:
-    - rid: 565676087205953933
+    - rid: 565676087205954101
       type: {class: ItemDef, ns: Code.Game.Scripts.Battle.Items, asm: Game.Scripts}
       data:
         <Id>k__BackingField: BrokenGlass
         Name: Broken mirror
+        Rotation: {x: 0, y: 0, z: 0, w: 0}
         Description: 'Reverses the outcome of the next move: a win becomes a loss,
           and a loss becomes a win.'
         Prefab: {fileID: 211301192306214981, guid: d4612ac804f036c4cab2d5b5baa0f92e, type: 3}
-    - rid: 565676087205953934
+    - rid: 565676087205954102
       type: {class: ItemDef, ns: Code.Game.Scripts.Battle.Items, asm: Game.Scripts}
       data:
         <Id>k__BackingField: Fortune Cookie
         Name: Fortune Cookie
+        Rotation: {x: 0, y: 0, z: 0, w: 0}
         Description: Reveal the opponent's next move.
         Prefab: {fileID: 69515242149952780, guid: e3c47d42ea8097749b8d21cfe089359e, type: 3}
-    - rid: 565676087205953935
+    - rid: 565676087205954103
       type: {class: ItemDef, ns: Code.Game.Scripts.Battle.Items, asm: Game.Scripts}
       data:
         <Id>k__BackingField: Knife
         Name: Knife
+        Rotation: {x: 0, y: 0, z: 0, w: 0}
         Description: "Choose one of the opponent's cards \u2014 they cannot play
           it this turn."
         Prefab: {fileID: 69515242149952780, guid: 15a312a03ba6b024dba70b4cf1b5878b, type: 3}
-    - rid: 565676087205953936
+    - rid: 565676087205954104
       type: {class: ItemDef, ns: Code.Game.Scripts.Battle.Items, asm: Game.Scripts}
       data:
         <Id>k__BackingField: Pills
         Name: Pills
+        Rotation: {x: 0, y: 0, z: 0, w: 0}
         Description: Scores 2 points this turn instead of 1.
         Prefab: {fileID: 69515242149952780, guid: 48d7886f61f98fc4fae9282527e1142b, type: 3}
-    - rid: 565676087205953937
+    - rid: 565676087205954105
       type: {class: ItemDef, ns: Code.Game.Scripts.Battle.Items, asm: Game.Scripts}
       data:
         <Id>k__BackingField: Spare Signal Flare
         Name: Spare Signal Flare
+        Rotation: {x: -0.5331301, y: -0.2158256, z: -0.14285181, w: 0.80547184}
         Description: Gain +1 Signal Flare.
         Prefab: {fileID: 69515242149952780, guid: 7db014c4b83fc404ba7704b29002b23c, type: 3}
-    - rid: 565676087205953938
+    - rid: 565676087205954106
       type: {class: ItemDef, ns: Code.Game.Scripts.Battle.Items, asm: Game.Scripts}
       data:
         <Id>k__BackingField: Toilet Paper
         Name: Toilet Paper
+        Rotation: {x: 0.20791161, y: 0, z: 0, w: -0.9781476}
         Description: Scores 2 points this turn instead of 1.
         Prefab: {fileID: 69515242149952780, guid: caf19da6931d1ab4e981f6c4f83d752a, type: 3}
-    - rid: 565676087205953939
+    - rid: 565676087205954107
       type: {class: ItemDef, ns: Code.Game.Scripts.Battle.Items, asm: Game.Scripts}
       data:
         <Id>k__BackingField: Whetstone
         Name: Whetstone
+        Rotation: {x: 0.21000995, y: -0.349183, z: -0.08061528, w: -0.90965277}
         Description: Scores 2 points this turn instead of 1.
         Prefab: {fileID: 4775122535878512651, guid: 07292e3f986f9b240b56c4e213a70b15, type: 3}
-    - rid: 565676087205953940
+    - rid: 565676087205954108
       type: {class: GameAppSetting, ns: Game.Main.Settings, asm: Game.Main}
       data:
         <Id>k__BackingField: 
         GameScene: MainScene
-    - rid: 565676087205953941
+    - rid: 565676087205954109
       type: {class: SignDef, ns: Code.Game.Scripts.Battle, asm: Game.Scripts}
       data:
         <Id>k__BackingField: F
@@ -95,7 +102,7 @@ MonoBehaviour:
         Sprite: {fileID: 21300000, guid: 38497ce17def40948bbf48bf9a3775ba, type: 3}
         Material: {fileID: 2100000, guid: e76ef233b3ff8db4ba7670e40a01f6a9, type: 2}
         BeatSigns: 04000000
-    - rid: 565676087205953942
+    - rid: 565676087205954110
       type: {class: SignDef, ns: Code.Game.Scripts.Battle, asm: Game.Scripts}
       data:
         <Id>k__BackingField: Goat
@@ -104,7 +111,7 @@ MonoBehaviour:
         Sprite: {fileID: 21300000, guid: 96f72008f94d5dd4fbbc32a830ead91a, type: 3}
         Material: {fileID: 2100000, guid: 0001eeb9508830944967392abdf1862f, type: 2}
         BeatSigns: 010000000200000003000000
-    - rid: 565676087205953943
+    - rid: 565676087205954111
       type: {class: SignDef, ns: Code.Game.Scripts.Battle, asm: Game.Scripts}
       data:
         <Id>k__BackingField: Papper
@@ -113,7 +120,7 @@ MonoBehaviour:
         Sprite: {fileID: 21300000, guid: add44f82197341349826c4c805080923, type: 3}
         Material: {fileID: 2100000, guid: bece68f402d5c894aaa877b7ed164dc1, type: 2}
         BeatSigns: 0100000005000000
-    - rid: 565676087205953944
+    - rid: 565676087205954112
       type: {class: SignDef, ns: Code.Game.Scripts.Battle, asm: Game.Scripts}
       data:
         <Id>k__BackingField: Rock
@@ -122,7 +129,7 @@ MonoBehaviour:
         Sprite: {fileID: 21300000, guid: 670f50645234fa34c86ca6b4f51a3773, type: 3}
         Material: {fileID: 2100000, guid: 985563fb65081394c83b47c650f28bc7, type: 2}
         BeatSigns: 0300000005000000
-    - rid: 565676087205953945
+    - rid: 565676087205954113
       type: {class: SignDef, ns: Code.Game.Scripts.Battle, asm: Game.Scripts}
       data:
         <Id>k__BackingField: Scissors

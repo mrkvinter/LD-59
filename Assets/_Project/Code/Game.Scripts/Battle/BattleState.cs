@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Code.Game.Core;
 using Code.Game.Scripts.Battle.Items;
 using Cysharp.Threading.Tasks;
-using DG.Tweening;
 using RG.DefinitionSystem.Core;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -14,25 +12,30 @@ namespace Code.Game.Scripts.Battle
 {
     public class BattleState
     {
-        private const int Rounds = 3;
-        private const int SignsPerRound = 5;
-        
         private int currentRound;
         public Player EnemyPlayer;
         public Player Player;
         public readonly SceneLinks SceneLinks = G.Resolve<SceneLinks>();
 
         private readonly ItemsService itemsService;
-        
+
         private List<IAffectGame> affectGames = new();
-        
-        public Action OnRoundEnd;
+        private List<DefRef<ItemDef>> items = new();
+        private Queue<DefRef<ItemDef>> itemsQueue = new();
+
+        public Action OnTurnEnd;
+        public event Action OnRoundEnd;
+        public event Action<bool> OnGameEnd;
 
         public int ScoreMultiplayer = 1;
         public int ScoreForScissors = 1;
         public int ScoreForRock = 1;
         public int ScoreForPaper = 1;
-        
+        public int ItemsPerRound;
+        public int CardsPerRound = 5;
+        public int WinStones = 3;
+
+        public bool NotStartNextRound = false;
 
         public BattleState()
         {
@@ -40,12 +43,30 @@ namespace Code.Game.Scripts.Battle
         }
 
         public void AddAfffect(IAffectGame affectGame) => affectGames.Add(affectGame);
+
         private void AddItem(DefRef<ItemDef> itemDef)
         {
             var item = itemsService.CreateItem(itemDef);
+            if (item == null) return;
+
             item.IsSelectable = true;
             Player.Items.Add(item);
             item.View.OnUse += () => UseItem(item, Player).Forget();
+        }
+
+        private void RefillItems()
+        {
+            itemsQueue = new Queue<DefRef<ItemDef>>(items.OrderBy(_ => Guid.NewGuid()));
+        }
+
+        private void AddItems(int count)
+        {
+            for (var i = 0; i < count; i++)
+            {
+                if (itemsQueue.Count == 0) RefillItems();
+
+                AddItem(itemsQueue.Dequeue());
+            }
         }
 
         private async UniTask UseItem(Item item, Player player)
@@ -56,46 +77,108 @@ namespace Code.Game.Scripts.Battle
             itemsService.Release(item);
         }
 
-        public void OnEnter()
+        public void StartBattle(Player player, Player enemy, List<DefRef<ItemDef>> items)
         {
             currentRound = 0;
-            var baseDeck = new List<DefRef<SignDef>>();
-            baseDeck.AddRange(Enumerable.Repeat(SignDefType.Rock, 2));
-            baseDeck.AddRange(Enumerable.Repeat(SignDefType.Papper, 2));
-            baseDeck.AddRange(Enumerable.Repeat(SignDefType.Scissors, 2));
-            baseDeck.AddRange(Enumerable.Repeat(SignDefType.Goat, 1));
-            baseDeck.AddRange(Enumerable.Repeat(SignDefType.F, 1));
-            
-            EnemyPlayer = new Player(3, baseDeck.OrderBy(_ => Guid.NewGuid()).ToList());
-            Player = new Player(3, baseDeck.OrderBy(_ => Guid.NewGuid()).ToList());
-            
+
+            itemsQueue = new Queue<DefRef<ItemDef>>(items.OrderBy(_ => Guid.NewGuid()));
+            this.items.AddRange(items);
+
+            EnemyPlayer = enemy;
+            Player = player;
+
             // AddItem(ItemDefType.BrokenGlass);
-            AddItem(ItemDefType.Knife);
-            AddItem(ItemDefType.Pills);
-            AddItem(ItemDefType.Pills);
-            AddItem(ItemDefType.SpareSignalFlare);
-            AddItem(ItemDefType.Whetstone);
-            AddItem(ItemDefType.FortuneCookie);
-            
+            // AddItem(ItemDefType.Knife);
+            // AddItem(ItemDefType.Pills);
+            // AddItem(ItemDefType.Pills);
+            // AddItem(ItemDefType.SpareSignalFlare);
+            // AddItem(ItemDefType.Whetstone);
+            // AddItem(ItemDefType.FortuneCookie);
+
             SceneLinks.EnemyHealthPanel.SetHealthCount(Player.Health);
             SceneLinks.PlayerHealthPanel.SetHealthCount(EnemyPlayer.Health);
-            
-            StartRound();
+
+            StartNewRound();
         }
 
         public void OnExit()
         {
+            EnemyPlayer.ClearHand(SceneLinks.EnemyCardsParent);
+            Player.ClearHand(SceneLinks.PlayerCardsParent);
             
+            foreach (var playerItem in Player.Items)
+            {
+                SceneLinks.ItemHolder.Release(playerItem.View);
+                Object.Destroy(playerItem.View.gameObject);
+            }
+            
+            Player.Items.Clear();
+
+            foreach (var item in EnemyPlayer.Items)
+            {
+                SceneLinks.EnemyItemHolder.Release(item.View);
+                Object.Destroy(item.View.gameObject);
+            }
+            
+            EnemyPlayer.Items.Clear();
         }
 
-        private void StartRound()
+        private void NextTurn()
+        {
+            if (EnemyPlayer.CardsHand.Count == 0 || Player.CardsHand.Count == 0 ||
+                EnemyPlayer.WinStones >= WinStones || Player.WinStones >= WinStones)
+            {
+                OnRoundEnd?.Invoke();
+
+                if (NotStartNextRound) return;
+
+                StartNewRound();
+            }
+
+            EnemyPlayer.SelectSign();
+        }
+
+        public void StartNewRound()
         {
             currentRound++;
-            EnemyPlayer.Draw(SignsPerRound);
-            Player.Draw(SignsPerRound);
+            AddItems(ItemsPerRound);
+
+            if (Player.WinStones > EnemyPlayer.WinStones)
+            {
+                EnemyPlayer.ReduceHealth(1);
+            }
+
+            if (EnemyPlayer.WinStones > Player.WinStones)
+            {
+                Player.ReduceHealth(1);
+            }
+
+            if (Player.Health <= 0)
+            {
+                OnGameEnd?.Invoke(false);
+                return;
+            }
+
+            if (EnemyPlayer.Health <= 0)
+            {
+                OnGameEnd?.Invoke(true);
+                return;
+            }
+
+
+            Player.WinStones = 0;
+            EnemyPlayer.WinStones = 0;
+            UpdateAll();
+
+            EnemyPlayer.ClearHand(SceneLinks.EnemyCardsParent);
+            Player.ClearHand(SceneLinks.PlayerCardsParent);
+            EnemyPlayer.RefillBag();
+            Player.RefillBag();
+            EnemyPlayer.Draw(CardsPerRound);
+            Player.Draw(CardsPerRound);
             
             EnemyPlayer.SelectSign();
-            
+
             InstantiateCards();
         }
 
@@ -106,10 +189,10 @@ namespace Code.Game.Scripts.Battle
                 var cardView = Object.Instantiate(SceneLinks.CardPrefab);
                 SceneLinks.PlayerCardsParent.Add(cardView);
                 card.SetView(cardView);
-                
+
                 cardView.OnClick += () => OnCardSelect(cardView);
             }
-            
+
             foreach (var card in EnemyPlayer.CardsHand)
             {
                 var cardView = Object.Instantiate(SceneLinks.CardPrefab);
@@ -128,7 +211,7 @@ namespace Code.Game.Scripts.Battle
             SceneLinks.RightHandView.SetVisible(true);
 
             if (EnemyPlayer.SelectedCard == null) SceneLinks.LeftHandView.SetVisible(false);
-            
+
             SceneLinks.LeftHandView.SetSign(Sign.Rock);
             SceneLinks.RightHandView.SetSign(Sign.Rock);
 
@@ -136,21 +219,22 @@ namespace Code.Game.Scripts.Battle
 
             SceneLinks.LeftHandView.PlayShakeAnimation().Forget();
             await SceneLinks.RightHandView.PlayShakeAnimation();
-            
+
             SceneLinks.LeftHandView.SetSign(EnemyPlayer.SelectedCard.Sign);
             SceneLinks.RightHandView.SetSign(cardView.SelectedSign);
-            
-            await UniTask.Delay(TimeSpan.FromSeconds(1f));
-            
+
+            await UniTask.Delay(TimeSpan.FromSeconds(.5f));
+
             var (winner, winnerSign) = GetWinner(EnemyPlayer.SelectedCard?.Sign ?? Sign.None, cardView.SelectedSign);
-            Debug.Log($"Winner: {winner}, Enemy Sign: {EnemyPlayer.SelectedCard.Sign}, Player Sign: {cardView.SelectedSign}");
+            Debug.Log(
+                $"Winner: {winner}, Enemy Sign: {EnemyPlayer.SelectedCard.Sign}, Player Sign: {cardView.SelectedSign}");
 
             if (affectGames.FirstOrDefault(e => e is IAffectWinner) is IAffectWinner affectWinner)
             {
                 affectGames.Remove(affectWinner);
                 winner = affectWinner.AffectWinner(winner);
             }
-            
+
             var scoreForRound = winnerSign switch
             {
                 Sign.Rock => ScoreForRock,
@@ -158,31 +242,35 @@ namespace Code.Game.Scripts.Battle
                 Sign.Scissors => ScoreForScissors,
                 _ => 1
             };
-            
+
             scoreForRound *= ScoreMultiplayer;
-            
+
             if (winner == Winner.Right)
             {
                 SceneLinks.WinTitle.SetActive(true);
-                EnemyPlayer.ReduceHealth(scoreForRound);
+                Player.WinStones += scoreForRound;
+                // EnemyPlayer.ReduceHealth(scoreForRound);
             }
+
             if (winner == Winner.Left)
             {
                 SceneLinks.LoseTitle.SetActive(true);
-                Player.ReduceHealth(scoreForRound);
+                EnemyPlayer.WinStones += scoreForRound;
+                // Player.ReduceHealth(scoreForRound);
             }
+
             if (winner == Winner.Draw) SceneLinks.DrawTitle.SetActive(true);
-            
+
             Player.RemoveCard(cardView.Card);
 
-            UpdateSignalFlares();
+            UpdateAll();
             var enemySelectedCard = EnemyPlayer.SelectedCard;
             SceneLinks.EnemyCardsParent.Remove(enemySelectedCard.View);
             EnemyPlayer.RemoveSelectedSign();
             Object.Destroy(enemySelectedCard.View.gameObject);
 
-            await UniTask.Delay(TimeSpan.FromSeconds(2f));
-            
+            await UniTask.Delay(TimeSpan.FromSeconds(1.5f));
+
             SceneLinks.WinTitle.SetActive(false);
             SceneLinks.LoseTitle.SetActive(false);
             SceneLinks.DrawTitle.SetActive(false);
@@ -192,14 +280,30 @@ namespace Code.Game.Scripts.Battle
 
             EnemyPlayer.ClearAffects();
             EnemyPlayer.SelectSign();
-            
-            OnRoundEnd?.Invoke();
+
+            if (Player.Health <= 0)
+            {
+                OnGameEnd?.Invoke(false);
+                return;
+            }
+
+            if (EnemyPlayer.Health <= 0)
+            {
+                OnGameEnd?.Invoke(true);
+                return;
+            }
+
+            OnTurnEnd?.Invoke();
+
+            NextTurn();
         });
 
-        public void UpdateSignalFlares()
+        public void UpdateAll()
         {
             SceneLinks.EnemyHealthPanel.SetHealthCount(EnemyPlayer.Health);
             SceneLinks.PlayerHealthPanel.SetHealthCount(Player.Health);
+            SceneLinks.PlayerWinStones.SetHealthCount(Player.WinStones);
+            SceneLinks.EnemyWinStones.SetHealthCount(EnemyPlayer.WinStones);
         }
 
         private (Winner, Sign) GetWinner(Sign leftSign, Sign rightSign)
@@ -212,7 +316,7 @@ namespace Code.Game.Scripts.Battle
             var rightSignDef = SignDef.Get(rightSign);
             var isLeftWin = leftSignDef.BeatSigns.Contains(rightSignDef.Sign);
             var isRightWin = rightSignDef.BeatSigns.Contains(leftSignDef.Sign);
-            
+
             return (isLeftWin, isRightWin) switch
             {
                 (true, true) => (Winner.Draw, Sign.None),

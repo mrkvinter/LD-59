@@ -1,6 +1,17 @@
 {
   "type": "Code.Game.Scripts.Battle.Items.ItemDef",
   "Name": "Spare Signal Flare",
+  "Rotation": {
+    "x": -0.533130169,
+    "y": -0.215825543,
+    "z": -0.1428518,
+    "w": 0.805471838,
+    "eulerAngles": {
+      "x": 293.0,
+      "y": 330.0,
+      "z": 2.185067E-06
+    }
+  },
   "Description": "Gain +1 Signal Flare.",
   "Prefab": {
     "guid": "7db014c4b83fc404ba7704b29002b23c",

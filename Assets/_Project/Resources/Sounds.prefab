@@ -47,4 +47,7 @@ MonoBehaviour:
   sounds:
   - Name: Sounds_Default
     Clips: []
+  - Name: rumble_loop
+    Clips:
+    - {fileID: 8300000, guid: c981b04abd43f7946b8c6b2534c5d5c9, type: 3}
   mixerGroups: []

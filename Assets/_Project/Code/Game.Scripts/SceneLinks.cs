@@ -28,6 +28,9 @@ namespace Code.Game.Scripts
         public HealthPanel EnemyHealthPanel;
         public HealthPanel PlayerHealthPanel;
 
+        public HealthPanel PlayerWinStones;
+        public HealthPanel EnemyWinStones;
+
         public TMP_Text EnemyStateText;
 
         public Button RestartButton;
@@ -42,6 +45,7 @@ namespace Code.Game.Scripts
         public Transform CenterSocket;
         public Transform CenterBigItemSocket;
         public ItemHolder ItemHolder;
+        public ItemHolder EnemyItemHolder;
 
         [Header("Volumes")] 
         public Volume PillsVolume;
@@ -50,8 +54,14 @@ namespace Code.Game.Scripts
         public CinemachineVirtualCameraBase VC_LookAtEnemy;
         public CinemachineVirtualCameraBase VC_LookAtTable;
         public CinemachineVirtualCameraBase VC_LookAtEnemyCard;
+        public CinemachineVirtualCameraBase VC_LookAtFlaresCard;
+        public CinemachineVirtualCameraBase VC_LookAtInstruction;
+        // public CinemachineVirtualCameraBase VC_LookAtEnemyStones;
+        public CinemachineVirtualCameraBase VC_LookAtPlayerStones;
 
+        
         [Header("Events")] public bool FastMode;
+        public GameObject InputBlocker;
         public StatefulObject HandStatefulObject;
         public Transform PointTable_1;
         public Transform PointTable_2;
@@ -61,5 +71,6 @@ namespace Code.Game.Scripts
 
         [Header("First_Person_Event")]
         public GameObject FirstPersonEvent;
+        public GameObject SecondPersonEvent;
     }
 }

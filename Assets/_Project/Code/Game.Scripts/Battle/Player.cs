@@ -18,11 +18,8 @@ namespace Code.Game.Scripts.Battle
         public readonly List<IAffectEnemySign> Affects = new();
         
         public Card SelectedCard { get; private set; }
-        // public int RockProbability => (int)(AvailableSigns.Count(x => x == Sign.Rock) / (float) AvailableSigns.Count() * 100);
-        // public int PaperProbability => (int)((AvailableSigns.Count(x => x == Sign.Paper) / (float) AvailableSigns.Count()) * 100);
-        // public int ScissorsProbability => (int)((AvailableSigns.Count(x => x == Sign.Scissors) / (float) AvailableSigns.Count()) * 100);
-        // public int GoatProbability => (int)((AvailableSigns.Count(x => x == Sign.Goat) / (float) AvailableSigns.Count()) * 100);
-        // public int FProbability => (int)((AvailableSigns.Count(x => x == Sign.Fuck) / (float) AvailableSigns.Count()) * 100);
+
+        public int WinStones { get; set; } = 0;
 
         public IEnumerable<Card> AvailableSigns => 
             CardsHand.Where(x => Affects.All(a => a.IsSignAvailable(x)));
@@ -31,18 +28,35 @@ namespace Code.Game.Scripts.Battle
         {
             Health = health;
 
+            Cards.AddRange(signsBag.Select(x => new Card(x.Unwrap())));
             foreach (var signDef in signsBag)
             {
                 CardsBag.Add(new Card(signDef.Unwrap()));
             }
-        }  
-        
+        }
+
+        public void ReplaceBag(List<DefRef<SignDef>> signsBag)
+        {
+            Cards.Clear();
+            CardsBag.Clear();
+            
+            Cards.AddRange(signsBag.Select(x => new Card(x.Unwrap())));
+            CardsBag.AddRange(Cards);
+        }
+
+        public void RefillBag()
+        {
+            CardsBag.Clear();
+            CardsBag.AddRange(Cards);
+        }
+
         public void Draw(int count)
         {
             while (count > 0 && CardsBag.Count > 0)
             {
-                var sign = CardsBag[0];
-                CardsBag.RemoveAt(0);
+                var index = Random.Range(0, CardsBag.Count);
+                var sign = CardsBag[index];
+                CardsBag.RemoveAt(index);
                 CardsHand.Add(sign);
                 count--;
             }
@@ -96,6 +110,17 @@ namespace Code.Game.Scripts.Battle
         public void ClearAffects()
         {
             Affects.Clear();
-        } 
+        }
+
+        public void ClearHand(CardHolder cardHolder)
+        {
+            foreach (var card in CardsHand)
+            {
+                cardHolder.Remove(card.View);
+                Object.Destroy(card.View.gameObject);
+            }
+            
+            CardsHand.Clear();
+        }
     }
 }

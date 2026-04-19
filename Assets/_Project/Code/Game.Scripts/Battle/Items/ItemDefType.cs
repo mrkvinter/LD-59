@@ -23,6 +23,8 @@ namespace Code.Game.Scripts.Battle.Items {
         
         public static RG.DefinitionSystem.Core.DefRef<Code.Game.Scripts.Battle.Items.ItemDef> SpareSignalFlare = "Spare Signal Flare";
         
+        public static RG.DefinitionSystem.Core.DefRef<Code.Game.Scripts.Battle.Items.ItemDef> ToiletPaper = "Toilet Paper";
+        
         public static RG.DefinitionSystem.Core.DefRef<Code.Game.Scripts.Battle.Items.ItemDef> Whetstone = "Whetstone";
     }
 }

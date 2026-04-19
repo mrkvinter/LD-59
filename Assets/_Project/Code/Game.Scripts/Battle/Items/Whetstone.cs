@@ -5,13 +5,15 @@ namespace Code.Game.Scripts.Battle.Items
 {
     public class Whetstone : Item
     {
+        public override bool IsBigItem => true;
+
         public override async UniTask OnUse(BattleState battleState)
         {
             BlockSameItemsWithinRound(battleState, battleState.Player);
             await MoveToCenter(battleState.SceneLinks);
 
             battleState.ScoreForScissors *= 2;
-            battleState.OnRoundEnd += OnRoundEnd;
+            battleState.OnTurnEnd += OnRoundEnd;
 
             await UniTask.Delay(TimeSpan.FromSeconds(0.5f));
             await MoveDown();
@@ -20,7 +22,7 @@ namespace Code.Game.Scripts.Battle.Items
             void OnRoundEnd()
             {
                 battleState.ScoreForScissors = 1;
-                battleState.OnRoundEnd -= OnRoundEnd;
+                battleState.OnTurnEnd -= OnRoundEnd;
             }
         }
     }

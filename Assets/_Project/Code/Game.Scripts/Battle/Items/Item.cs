@@ -15,6 +15,8 @@ namespace Code.Game.Scripts.Battle.Items
                                      (BlockedForRound ? $"\n <color=red>Can't be used this round</color>" : "");
         public bool IsSelectable { get; set; }
         public bool BlockedForRound { get; set; } = false;
+        
+        public virtual bool IsBigItem => false;
 
         public void SetView(ItemView view)
         {
@@ -26,8 +28,8 @@ namespace Code.Game.Scripts.Battle.Items
 
         protected async UniTask MoveToCenter(SceneLinks SceneLinks)
         {
-            View.transform.parent = SceneLinks.CenterSocket;
-            View.transform.DOLocalRotate(Vector3.zero, 0.25f);
+            View.transform.parent = IsBigItem ? SceneLinks.CenterBigItemSocket : SceneLinks.CenterSocket;
+            View.transform.DOLocalRotateQuaternion(ItemDef.Rotation, 0.25f);
             await View.transform.DOLocalMove(Vector3.zero, 0.25f);
         }
 

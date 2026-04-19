@@ -9,6 +9,7 @@ namespace Code.Game.Scripts.Battle.Items
     public class ItemDef : Definition
     {
         public string Name;
+        public Quaternion Rotation;
         [TextArea(3, 5)]
         public string Description;
         public GameObject Prefab;

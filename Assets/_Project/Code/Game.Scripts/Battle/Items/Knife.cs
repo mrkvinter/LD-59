@@ -28,13 +28,13 @@ namespace Code.Game.Scripts.Battle.Items
             sceneLinks.ItemDescription.Hide();
             sceneLinks.VC_LookAtEnemyCard.Priority.Enabled = false;
 
-            battleState.OnRoundEnd += OnRoundEnd;
+            battleState.OnTurnEnd += OnRoundEnd;
             return;
 
             void OnRoundEnd()
             {
                 selectedCard?.Card.SetIsBLocked(false);
-                battleState.OnRoundEnd -= OnRoundEnd;
+                battleState.OnTurnEnd -= OnRoundEnd;
             }
 
             void OnCardSelect(CardView cardView)

@@ -12,7 +12,7 @@ namespace Code.Game.Scripts.Battle.Items
             await MoveToCenter(battleState.SceneLinks);
 
             battleState.ScoreMultiplayer *= 2;
-            battleState.OnRoundEnd += OnRoundEnd;
+            battleState.OnTurnEnd += OnRoundEnd;
 
             await DOTween.To(
                     () => battleState.SceneLinks.PillsVolume.weight,
@@ -33,7 +33,7 @@ namespace Code.Game.Scripts.Battle.Items
                     () => battleState.SceneLinks.PillsVolume.weight,
                     x => battleState.SceneLinks.PillsVolume.weight = x, 0, .5f);
                 battleState.ScoreMultiplayer = 1;
-                battleState.OnRoundEnd -= OnRoundEnd;
+                battleState.OnTurnEnd -= OnRoundEnd;
             }
         }
     }

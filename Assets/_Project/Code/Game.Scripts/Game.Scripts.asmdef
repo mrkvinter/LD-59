@@ -20,7 +20,8 @@
         "Unity.InputSystem",
         "StarterAssets",
         "DCFApixels.DebugX",
-        "Unity.RenderPipelines.Core.Runtime"
+        "Unity.RenderPipelines.Core.Runtime",
+        "KvintessentialGames"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

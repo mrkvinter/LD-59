@@ -32,7 +32,7 @@ namespace Code.UI
                 Type = DialogueStageType.Text,
                 Text = text,
                 Speed = speed,
-                WithSpeaker = withSpeaker,
+                WithSpeaker = withSpeaker && !string.IsNullOrEmpty(OverrideSpeaker),
             });
             return this;
         }

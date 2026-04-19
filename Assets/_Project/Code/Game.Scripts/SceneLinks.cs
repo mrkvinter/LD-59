@@ -1,5 +1,7 @@
 ﻿using Code.Game.Scripts.Battle;
 using Code.Game.Scripts.Battle.Items;
+using Code.UI;
+using Game.Utilities;
 using TMPro;
 using Unity.Cinemachine;
 using UnityEngine;
@@ -48,5 +50,16 @@ namespace Code.Game.Scripts
         public CinemachineVirtualCameraBase VC_LookAtEnemy;
         public CinemachineVirtualCameraBase VC_LookAtTable;
         public CinemachineVirtualCameraBase VC_LookAtEnemyCard;
+
+        [Header("Events")] public bool FastMode;
+        public StatefulObject HandStatefulObject;
+        public Transform PointTable_1;
+        public Transform PointTable_2;
+        public Transform Table;
+        public Light MainLight;
+        public DialoguePanel DialoguePanel;
+
+        [Header("First_Person_Event")]
+        public GameObject FirstPersonEvent;
     }
 }

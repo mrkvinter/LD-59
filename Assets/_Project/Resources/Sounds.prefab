@@ -44,5 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf4d032a74a8b4a43bbc18a380220e30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: KvintessentialGames::KvinterGames.AudioService
-  sounds: []
+  sounds:
+  - Name: Sounds_Default
+    Clips: []
   mixerGroups: []

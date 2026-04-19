@@ -1,0 +1,10 @@
+{
+  "type": "Code.Game.Scripts.Battle.Items.ItemDef",
+  "Name": "Pills",
+  "Description": "Scores 2 points this turn instead of 1.",
+  "Prefab": {
+    "guid": "48d7886f61f98fc4fae9282527e1142b",
+    "fileID": 69515242149952780
+  },
+  "Id": "Pills"
+}

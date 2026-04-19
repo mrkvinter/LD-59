@@ -2,6 +2,7 @@
 using System.Linq;
 using Code.Game.Scripts.Battle.Items;
 using RG.DefinitionSystem.Core;
+using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace Code.Game.Scripts.Battle
@@ -50,12 +51,19 @@ namespace Code.Game.Scripts.Battle
         public void SelectSign()
         {
             var cards = CardsHand.Where(e => !e.IsBLocked).ToList();
+            if (cards.Count == 0)
+            {
+                SelectedCard = null;
+                return;
+            }
             SelectedCard = cards[Random.Range(0, cards.Count())];
         }
 
-        public void ReduceHealth()
+        public void ReduceHealth(int count)
         {
-            Health--;
+            Health -= count;
+            
+            Health = Mathf.Max(Health, 0);
         }
 
         public void RemoveSelectedSign()

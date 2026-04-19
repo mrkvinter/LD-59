@@ -28,14 +28,18 @@ namespace Code.Game.Scripts.Battle
         
         public Action OnRoundEnd;
 
+        public int ScoreForRound = 1;
+
         public BattleState()
         {
             itemsService = new ItemsService();
 
             AddItem(ItemDefType.BrokenGlass);
             AddItem(ItemDefType.Knife);
+            AddItem(ItemDefType.Pills);
         }
 
+        public void AddAfffect(IAffectGame affectGame) => affectGames.Add(affectGame);
         private void AddItem(DefRef<ItemDef> itemDef)
         {
             var item = itemsService.CreateItem(itemDef);
@@ -46,16 +50,9 @@ namespace Code.Game.Scripts.Battle
         private async UniTask UseItem(Item item)
         {
             item.View.transform.parent = SceneLinks.CenterSocket;
-            item.View.transform.DOLocalRotate(Vector3.zero, 0.5f);
-            await item.View.transform.DOLocalMove(Vector3.zero, 0.5f);
-            await UniTask.Delay(TimeSpan.FromSeconds(1f));
-
-            var affect = item.GetAffectGame();
-            affectGames.Add(affect);
-            if (affect is IAffectEnemySign affectEnemySign)
-            {
-                EnemyPlayer.AddAffects(affectEnemySign);
-            }
+            item.View.transform.DOLocalRotate(Vector3.zero, 0.25f);
+            await item.View.transform.DOLocalMove(Vector3.zero, 0.25f);
+            await UniTask.Delay(TimeSpan.FromSeconds(.5f));
             itemsService.Release(item);
             
             await item.OnUse(this);
@@ -96,18 +93,6 @@ namespace Code.Game.Scripts.Battle
             InstantiateCards();
         }
 
-        // private void PrintEnemyState()
-        // {
-        //     var sb = new StringBuilder();
-        //     sb.AppendLine($"Rock: {enemyPlayer.RockProbability}%")
-        //         .AppendLine($"Paper: {enemyPlayer.PaperProbability}%")
-        //         .AppendLine($"Scissors: {enemyPlayer.ScissorsProbability}%")
-        //         .AppendLine($"Goat: {enemyPlayer.GoatProbability}%")
-        //         .AppendLine($"F@3k: {enemyPlayer.FProbability}%");
-        //     
-        //     sceneLinks.EnemyStateText.text = sb.ToString();
-        // }
-
         private void InstantiateCards()
         {
             foreach (var card in Player.CardsHand)
@@ -133,6 +118,11 @@ namespace Code.Game.Scripts.Battle
             SceneLinks.Hands.SetActive(true);
             SceneLinks.GameUI.SetActive(false);
 
+            SceneLinks.LeftHandView.SetVisible(true);
+            SceneLinks.RightHandView.SetVisible(true);
+
+            if (EnemyPlayer.SelectedCard == null) SceneLinks.LeftHandView.SetVisible(false);
+            
             SceneLinks.LeftHandView.SetSign(Sign.Rock);
             SceneLinks.RightHandView.SetSign(Sign.Rock);
 
@@ -146,7 +136,7 @@ namespace Code.Game.Scripts.Battle
             
             await UniTask.Delay(TimeSpan.FromSeconds(1f));
             
-            var winner = GetWinner(EnemyPlayer.SelectedCard.Sign, cardView.SelectedSign);
+            var winner = GetWinner(EnemyPlayer.SelectedCard?.Sign ?? Sign.None, cardView.SelectedSign);
             Debug.Log($"Winner: {winner}, Enemy Sign: {EnemyPlayer.SelectedCard.Sign}, Player Sign: {cardView.SelectedSign}");
 
             if (affectGames.FirstOrDefault(e => e is IAffectWinner) is IAffectWinner affectWinner)
@@ -158,12 +148,12 @@ namespace Code.Game.Scripts.Battle
             if (winner == Winner.Right)
             {
                 SceneLinks.WinTitle.SetActive(true);
-                EnemyPlayer.ReduceHealth();
+                EnemyPlayer.ReduceHealth(ScoreForRound);
             }
             if (winner == Winner.Left)
             {
                 SceneLinks.LoseTitle.SetActive(true);
-                Player.ReduceHealth();
+                Player.ReduceHealth(ScoreForRound);
             }
             if (winner == Winner.Draw) SceneLinks.DrawTitle.SetActive(true);
             
@@ -193,6 +183,10 @@ namespace Code.Game.Scripts.Battle
 
         private Winner GetWinner(Sign leftSign, Sign rightSign)
         {
+            if (leftSign == Sign.None && rightSign == Sign.None) return Winner.Draw;
+            if (leftSign == Sign.None) return Winner.Right;
+            if (rightSign == Sign.None) return Winner.Left;
+
             var leftSignDef = SignDef.Get(leftSign);
             var rightSignDef = SignDef.Get(rightSign);
             var isLeftWin = leftSignDef.BeatSigns.Contains(rightSignDef.Sign);

@@ -19,7 +19,8 @@
         "Game.Utilities",
         "Unity.InputSystem",
         "StarterAssets",
-        "DCFApixels.DebugX"
+        "DCFApixels.DebugX",
+        "Unity.RenderPipelines.Core.Runtime"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

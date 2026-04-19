@@ -25,6 +25,7 @@ namespace Code.Game.Scripts.Battle.Items
         {
             if (def.Id == ItemDefType.BrokenGlass) return new BrokenGlasses();
             if (def.Id == ItemDefType.Knife) return new Knife();
+            if (def.Id == ItemDefType.Pills) return new Pills();
 
             return null;
         }

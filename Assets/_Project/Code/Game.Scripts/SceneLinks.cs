@@ -3,6 +3,7 @@ using Code.Game.Scripts.Battle.Items;
 using TMPro;
 using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 namespace Code.Game.Scripts
@@ -38,7 +39,10 @@ namespace Code.Game.Scripts
         [Header("Items")]
         public Transform CenterSocket;
         public ItemHolder ItemHolder;
-        
+
+        [Header("Volumes")] 
+        public Volume PillsVolume;
+
         [Header("VCams")]
         public CinemachineVirtualCameraBase VC_LookAtEnemy;
         public CinemachineVirtualCameraBase VC_LookAtTable;

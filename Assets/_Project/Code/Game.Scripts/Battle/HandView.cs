@@ -36,5 +36,10 @@ namespace Code.Game.Scripts.Battle
             }
             handImage.sprite = signDef.Sprite;
         }
+        
+        public void SetVisible(bool visible)
+        {
+            root.gameObject.SetActive(visible);
+        }
     }
 }

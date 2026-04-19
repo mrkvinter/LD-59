@@ -6,14 +6,7 @@ namespace Code.Game.Scripts.Battle.Items
 {
     public class Knife : Item
     {
-        public override IAffectGame GetAffectGame() => new KnifeAffect();
-
         private CardView selectedCard;
-
-        private class KnifeAffect : IAffectEnemySign
-        {
-            public bool IsSignAvailable(Card card) => card.Sign != Sign.Fuck;
-        }
 
         public override async UniTask OnUse(BattleState battleState)
         {

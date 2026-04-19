@@ -6,6 +6,7 @@ using Code.Game.Core;
 using Code.Game.Scripts.Battle.Items;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using RG.DefinitionSystem.Core;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -14,7 +15,7 @@ namespace Code.Game.Scripts.Battle
     public class BattleState
     {
         private const int Rounds = 3;
-        private const int SignsPerRound = 6;
+        private const int SignsPerRound = 5;
         
         private int currentRound;
         private Player enemyPlayer;
@@ -29,7 +30,13 @@ namespace Code.Game.Scripts.Battle
         {
             itemsService = new ItemsService();
 
-            var item = itemsService.CreateItem(ItemDefType.BrokenGlass);
+            AddItem(ItemDefType.BrokenGlass);
+            AddItem(ItemDefType.Knife);
+        }
+
+        private void AddItem(DefRef<ItemDef> itemDef)
+        {
+            var item = itemsService.CreateItem(itemDef);
             item.View.OnUse += () => UseItem(item).Forget();
         }
 
@@ -37,8 +44,16 @@ namespace Code.Game.Scripts.Battle
         {
             item.View.transform.parent = sceneLinks.CenterSocket;
             await item.View.transform.DOLocalMove(Vector3.zero, 0.5f);
-            affectGames.Add(item.GetAffectGame());
+            await UniTask.Delay(TimeSpan.FromSeconds(1f));
+            var affect = item.GetAffectGame();
+            affectGames.Add(affect);
+            if (affect is IAffectEnemySign affectEnemySign)
+            {
+                enemyPlayer.AddAffects(affectEnemySign);
+            }
             itemsService.Release(item);
+            
+            PrintEnemyState();
         }
 
         public void OnEnter()
@@ -115,7 +130,7 @@ namespace Code.Game.Scripts.Battle
             sceneLinks.LeftHandView.SetSign(enemyPlayer.SelectedSign);
             sceneLinks.RightHandView.SetSign(cardView.SelectedSign);
             
-            await UniTask.Delay(TimeSpan.FromSeconds(2f));
+            await UniTask.Delay(TimeSpan.FromSeconds(1f));
             
             var winner = GetWinner(enemyPlayer.SelectedSign, cardView.SelectedSign);
             Debug.Log($"Winner: {winner}, Enemy Sign: {enemyPlayer.SelectedSign}, Player Sign: {cardView.SelectedSign}");
@@ -145,7 +160,7 @@ namespace Code.Game.Scripts.Battle
             sceneLinks.PlayerHealthPanel.SetHealthCount(player.Health);
             PrintEnemyState();
 
-            await UniTask.Delay(TimeSpan.FromSeconds(4f));
+            await UniTask.Delay(TimeSpan.FromSeconds(2f));
             
             sceneLinks.WinTitle.SetActive(false);
             sceneLinks.LoseTitle.SetActive(false);
@@ -153,7 +168,8 @@ namespace Code.Game.Scripts.Battle
 
             sceneLinks.Hands.SetActive(false);
             sceneLinks.GameUI.SetActive(true);
-            
+
+            enemyPlayer.ClearAffects();
             enemyPlayer.SelectSign();
         });
 

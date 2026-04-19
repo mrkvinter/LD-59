@@ -22,6 +22,9 @@ namespace Code.Game.Editor.Windows.Cheats
         private CheatCategory currentCategory;
 
         private Vector2 _scrollPos;
+
+        private void OnInspectorUpdate() => Repaint();
+
         private void OnGUI()
         {
             using (new EditorGUILayout.VerticalScope())

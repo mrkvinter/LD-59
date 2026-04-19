@@ -49,9 +49,7 @@ namespace Code.Game.Editor.Windows.Cheats
         {
             cheatCategories ??= new ICheatCategory[]
             {
-                // new MechanicsCheatCategory(),
-                // new ProgressCheatCategory(),
-                // new FsmStateCategory()
+                new InputInfoCheatCategory()
             };
         }
     }

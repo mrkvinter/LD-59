@@ -14,14 +14,18 @@ namespace Code.Game.Scripts.Battle
         public readonly List<Sign> SignsBag = new();
         public readonly List<Sign> SignsHand = new();
         public readonly List<Item> Items = new();
+        public readonly List<IAffectEnemySign> Affects = new();
         
         public Sign SelectedSign { get; private set; }
-        public int RockProbability => (int)(SignsHand.Count(x => x == Sign.Rock) / (float) SignsHand.Count * 100);
-        public int PaperProbability => (int)((SignsHand.Count(x => x == Sign.Paper) / (float) SignsHand.Count) * 100);
-        public int ScissorsProbability => (int)((SignsHand.Count(x => x == Sign.Scissors) / (float) SignsHand.Count) * 100);
-        public int GoatProbability => (int)((SignsHand.Count(x => x == Sign.Goat) / (float) SignsHand.Count) * 100);
-        public int FProbability => (int)((SignsHand.Count(x => x == Sign.Fuck) / (float) SignsHand.Count) * 100);
+        public int RockProbability => (int)(AvailableSigns.Count(x => x == Sign.Rock) / (float) AvailableSigns.Count() * 100);
+        public int PaperProbability => (int)((AvailableSigns.Count(x => x == Sign.Paper) / (float) AvailableSigns.Count()) * 100);
+        public int ScissorsProbability => (int)((AvailableSigns.Count(x => x == Sign.Scissors) / (float) AvailableSigns.Count()) * 100);
+        public int GoatProbability => (int)((AvailableSigns.Count(x => x == Sign.Goat) / (float) AvailableSigns.Count()) * 100);
+        public int FProbability => (int)((AvailableSigns.Count(x => x == Sign.Fuck) / (float) AvailableSigns.Count()) * 100);
 
+        public IEnumerable<Sign> AvailableSigns => 
+            SignsHand.Where(x => Affects.All(a => a.IsSignAvailable(x)));
+        
         public Player(int health, List<Sign> signsBag)
         {
             Health = health;
@@ -41,7 +45,7 @@ namespace Code.Game.Scripts.Battle
 
         public void SelectSign()
         {
-            SelectedSign = SignsHand[Random.Range(0, SignsHand.Count)];
+            SelectedSign = AvailableSigns.ToList()[Random.Range(0, AvailableSigns.Count())];
         }
 
         public void ReduceHealth()
@@ -58,5 +62,21 @@ namespace Code.Game.Scripts.Battle
         {
             SignsHand.Remove(sign);
         }
+        
+        public void AddAffects(IAffectEnemySign affect)
+        {
+            Affects.Add(affect);
+
+            if (!affect.IsSignAvailable(SelectedSign))
+            {
+                RemoveSelectedSign();
+                SelectSign();
+            }
+        }
+        
+        public void ClearAffects()
+        {
+            Affects.Clear();
+        } 
     }
 }

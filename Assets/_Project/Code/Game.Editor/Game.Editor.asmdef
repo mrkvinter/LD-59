@@ -14,7 +14,8 @@
     "GameAnalyticsSDK",
     "KvintessentialGames",
     "Game.Main",
-    "Game.Dev"
+    "Game.Dev",
+    "Unity.InputSystem"
   ],
   "includePlatforms": [
     "Editor"

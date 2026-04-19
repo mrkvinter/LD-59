@@ -11,7 +11,7 @@
         public void SetView(ItemView view)
         {
             View = view;
-            View.Item = this;
+            if (View != null) View.Item = this;
         }
     }
 
@@ -22,5 +22,10 @@
     public interface IAffectWinner : IAffectGame
     {
         public virtual Winner AffectWinner(Winner winner) => winner;
+    }
+    
+    public interface IAffectEnemySign : IAffectGame
+    {
+        public bool IsSignAvailable(Sign sign);
     }
 }

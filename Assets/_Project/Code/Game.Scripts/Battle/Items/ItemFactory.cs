@@ -24,6 +24,7 @@ namespace Code.Game.Scripts.Battle.Items
         private static Item CreateItemImplement(ItemDef def)
         {
             if (def.Id == ItemDefType.BrokenGlass) return new BrokenGlasses();
+            if (def.Id == ItemDefType.Knife) return new Knife();
 
             return null;
         }

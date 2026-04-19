@@ -11,8 +11,10 @@ namespace Code.Game.Scripts.Battle.Items
         public ItemDef ItemDef { get; set; }
         public virtual IAffectGame GetAffectGame() => null;
         public string Name => ItemDef.Name;
-        public string Description => ItemDef.Description;
+        public string Description => ItemDef.Description + 
+                                     (BlockedForRound ? $"\n <color=red>Can't be used this round</color>" : "");
         public bool IsSelectable { get; set; }
+        public bool BlockedForRound { get; set; } = false;
 
         public void SetView(ItemView view)
         {
@@ -32,6 +34,11 @@ namespace Code.Game.Scripts.Battle.Items
         protected async UniTask MoveDown()
         {
             await View.transform.DOLocalMoveY(-1, 0.5f);
+        }
+
+        protected void BlockSameItemsWithinRound(BattleState battleState, Player player)
+        {
+            player.Items.ForEach(e => e.BlockedForRound = e.ItemDef.Id == ItemDef.Id);
         }
     }
 

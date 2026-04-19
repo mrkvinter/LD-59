@@ -59,6 +59,11 @@ namespace Code.Game.Scripts.Battle
             SelectedCard = cards[Random.Range(0, cards.Count())];
         }
 
+        public void AddHealth(int count)
+        {
+            Health += count;
+        }
+
         public void ReduceHealth(int count)
         {
             Health -= count;

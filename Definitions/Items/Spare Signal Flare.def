@@ -1,0 +1,10 @@
+{
+  "type": "Code.Game.Scripts.Battle.Items.ItemDef",
+  "Name": "Spare Signal Flare",
+  "Description": "Gain +1 Signal Flare.",
+  "Prefab": {
+    "guid": "7db014c4b83fc404ba7704b29002b23c",
+    "fileID": 69515242149952780
+  },
+  "Id": "Spare Signal Flare"
+}

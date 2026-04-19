@@ -1,6 +1,6 @@
 {
   "type": "Code.Game.Scripts.Battle.SignDef",
-  "Name": "Papper",
+  "Name": "Paper",
   "Sign": 2,
   "Sprite": {
     "guid": "add44f82197341349826c4c805080923",

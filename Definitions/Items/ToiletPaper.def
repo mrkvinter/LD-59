@@ -1,0 +1,10 @@
+{
+  "type": "Code.Game.Scripts.Battle.Items.ItemDef",
+  "Name": "Toilet Paper",
+  "Description": "Scores 2 points this turn instead of 1.",
+  "Prefab": {
+    "guid": "caf19da6931d1ab4e981f6c4f83d752a",
+    "fileID": 69515242149952780
+  },
+  "Id": "Toilet Paper"
+}

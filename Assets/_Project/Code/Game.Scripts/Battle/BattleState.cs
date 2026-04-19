@@ -28,16 +28,15 @@ namespace Code.Game.Scripts.Battle
         
         public Action OnRoundEnd;
 
-        public int ScoreForRound = 1;
+        public int ScoreMultiplayer = 1;
+        public int ScoreForScissors = 1;
+        public int ScoreForRock = 1;
+        public int ScoreForPaper = 1;
+        
 
         public BattleState()
         {
             itemsService = new ItemsService();
-
-            AddItem(ItemDefType.BrokenGlass);
-            AddItem(ItemDefType.Knife);
-            AddItem(ItemDefType.Pills);
-            AddItem(ItemDefType.FortuneCookie);
         }
 
         public void AddAfffect(IAffectGame affectGame) => affectGames.Add(affectGame);
@@ -45,15 +44,13 @@ namespace Code.Game.Scripts.Battle
         {
             var item = itemsService.CreateItem(itemDef);
             item.IsSelectable = true;
-            item.View.OnUse += () => UseItem(item).Forget();
+            Player.Items.Add(item);
+            item.View.OnUse += () => UseItem(item, Player).Forget();
         }
 
-        private async UniTask UseItem(Item item)
+        private async UniTask UseItem(Item item, Player player)
         {
-            // item.View.transform.parent = SceneLinks.CenterSocket;
-            // item.View.transform.DOLocalRotate(Vector3.zero, 0.25f);
-            // await item.View.transform.DOLocalMove(Vector3.zero, 0.25f);
-            // await UniTask.Delay(TimeSpan.FromSeconds(.5f));
+            player.Items.Remove(item);
             item.IsSelectable = false;
             await item.OnUse(this);
             itemsService.Release(item);
@@ -71,6 +68,14 @@ namespace Code.Game.Scripts.Battle
             
             EnemyPlayer = new Player(3, baseDeck.OrderBy(_ => Guid.NewGuid()).ToList());
             Player = new Player(3, baseDeck.OrderBy(_ => Guid.NewGuid()).ToList());
+            
+            // AddItem(ItemDefType.BrokenGlass);
+            AddItem(ItemDefType.Knife);
+            AddItem(ItemDefType.Pills);
+            AddItem(ItemDefType.Pills);
+            AddItem(ItemDefType.SpareSignalFlare);
+            AddItem(ItemDefType.Whetstone);
+            AddItem(ItemDefType.FortuneCookie);
             
             SceneLinks.EnemyHealthPanel.SetHealthCount(Player.Health);
             SceneLinks.PlayerHealthPanel.SetHealthCount(EnemyPlayer.Health);
@@ -137,7 +142,7 @@ namespace Code.Game.Scripts.Battle
             
             await UniTask.Delay(TimeSpan.FromSeconds(1f));
             
-            var winner = GetWinner(EnemyPlayer.SelectedCard?.Sign ?? Sign.None, cardView.SelectedSign);
+            var (winner, winnerSign) = GetWinner(EnemyPlayer.SelectedCard?.Sign ?? Sign.None, cardView.SelectedSign);
             Debug.Log($"Winner: {winner}, Enemy Sign: {EnemyPlayer.SelectedCard.Sign}, Player Sign: {cardView.SelectedSign}");
 
             if (affectGames.FirstOrDefault(e => e is IAffectWinner) is IAffectWinner affectWinner)
@@ -146,22 +151,31 @@ namespace Code.Game.Scripts.Battle
                 winner = affectWinner.AffectWinner(winner);
             }
             
+            var scoreForRound = winnerSign switch
+            {
+                Sign.Rock => ScoreForRock,
+                Sign.Paper => ScoreForPaper,
+                Sign.Scissors => ScoreForScissors,
+                _ => 1
+            };
+            
+            scoreForRound *= ScoreMultiplayer;
+            
             if (winner == Winner.Right)
             {
                 SceneLinks.WinTitle.SetActive(true);
-                EnemyPlayer.ReduceHealth(ScoreForRound);
+                EnemyPlayer.ReduceHealth(scoreForRound);
             }
             if (winner == Winner.Left)
             {
                 SceneLinks.LoseTitle.SetActive(true);
-                Player.ReduceHealth(ScoreForRound);
+                Player.ReduceHealth(scoreForRound);
             }
             if (winner == Winner.Draw) SceneLinks.DrawTitle.SetActive(true);
             
             Player.RemoveCard(cardView.Card);
 
-            SceneLinks.EnemyHealthPanel.SetHealthCount(EnemyPlayer.Health);
-            SceneLinks.PlayerHealthPanel.SetHealthCount(Player.Health);
+            UpdateSignalFlares();
             var enemySelectedCard = EnemyPlayer.SelectedCard;
             SceneLinks.EnemyCardsParent.Remove(enemySelectedCard.View);
             EnemyPlayer.RemoveSelectedSign();
@@ -182,11 +196,17 @@ namespace Code.Game.Scripts.Battle
             OnRoundEnd?.Invoke();
         });
 
-        private Winner GetWinner(Sign leftSign, Sign rightSign)
+        public void UpdateSignalFlares()
         {
-            if (leftSign == Sign.None && rightSign == Sign.None) return Winner.Draw;
-            if (leftSign == Sign.None) return Winner.Right;
-            if (rightSign == Sign.None) return Winner.Left;
+            SceneLinks.EnemyHealthPanel.SetHealthCount(EnemyPlayer.Health);
+            SceneLinks.PlayerHealthPanel.SetHealthCount(Player.Health);
+        }
+
+        private (Winner, Sign) GetWinner(Sign leftSign, Sign rightSign)
+        {
+            if (leftSign == Sign.None && rightSign == Sign.None) return (Winner.Draw, Sign.None);
+            if (leftSign == Sign.None) return (Winner.Right, rightSign);
+            if (rightSign == Sign.None) return (Winner.Left, leftSign);
 
             var leftSignDef = SignDef.Get(leftSign);
             var rightSignDef = SignDef.Get(rightSign);
@@ -195,10 +215,10 @@ namespace Code.Game.Scripts.Battle
             
             return (isLeftWin, isRightWin) switch
             {
-                (true, true) => Winner.Draw,
-                (true, false) => Winner.Left,
-                (false, true) => Winner.Right,
-                _ => Winner.Draw
+                (true, true) => (Winner.Draw, Sign.None),
+                (true, false) => (Winner.Left, leftSign),
+                (false, true) => (Winner.Right, rightSign),
+                _ => (Winner.Draw, Sign.None)
             };
         }
     }

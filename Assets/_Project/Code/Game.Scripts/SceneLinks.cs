@@ -38,6 +38,7 @@ namespace Code.Game.Scripts
 
         [Header("Items")]
         public Transform CenterSocket;
+        public Transform CenterBigItemSocket;
         public ItemHolder ItemHolder;
 
         [Header("Volumes")] 

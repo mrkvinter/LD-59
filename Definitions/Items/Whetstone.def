@@ -1,0 +1,10 @@
+{
+  "type": "Code.Game.Scripts.Battle.Items.ItemDef",
+  "Name": "Whetstone",
+  "Description": "Scores 2 points this turn instead of 1.",
+  "Prefab": {
+    "guid": "07292e3f986f9b240b56c4e213a70b15",
+    "fileID": 4775122535878512651
+  },
+  "Id": "Whetstone"
+}

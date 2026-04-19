@@ -1,4 +1,3 @@
-using System;
 using Cysharp.Threading.Tasks;
 
 namespace Code.Game.Scripts.Battle.Items
@@ -22,6 +21,5 @@ namespace Code.Game.Scripts.Battle.Items
                 _ => winner
             };
         }
-
     }
 }

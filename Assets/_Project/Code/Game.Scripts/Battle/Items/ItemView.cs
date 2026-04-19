@@ -18,16 +18,17 @@ namespace Code.Game.Scripts.Battle.Items
         public Item Item { get; set; }
 
         private Vector3 baseScale;
-        private SceneLinks sceneLinks = G.Resolve<SceneLinks>();
+        private SceneLinks sceneLinks;
 
         private void Awake()
         {
             baseScale = transform.localScale;
+            sceneLinks = G.Resolve<SceneLinks>();
         }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            if (Item is not { IsSelectable: true }) return;
+            if (Item is not { IsSelectable: true } || Item.BlockedForRound) return;
 
             transform.localScale = baseScale * hoverScale;
             ShowDescription();
@@ -41,7 +42,7 @@ namespace Code.Game.Scripts.Battle.Items
 
         public void OnPointerClick(PointerEventData eventData)
         {
-            if (Item is not { IsSelectable: true }) return;
+            if (Item is not { IsSelectable: true } || Item.BlockedForRound) return;
             
             OnUse?.Invoke();
         }

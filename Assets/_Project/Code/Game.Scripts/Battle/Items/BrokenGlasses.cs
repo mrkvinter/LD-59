@@ -7,12 +7,11 @@ namespace Code.Game.Scripts.Battle.Items
     {
         public override IAffectGame GetAffectGame() => new BrokenGlassesAffect();
 
-        public override UniTask OnUse(BattleState battleState)
+        public override async UniTask OnUse(BattleState battleState)
         {
             battleState.AddAfffect(new BrokenGlassesAffect());
-            
-            return UniTask.CompletedTask;
-        }
+            await MoveDown();
+       }
 
         private class BrokenGlassesAffect : IAffectWinner
         {

@@ -14,6 +14,7 @@ namespace Code.Game.Scripts.Battle
         public Sign Sign { get; private set; }
         public bool IsBLocked { get; private set; }
         public CardView View { get; private set; }
+        public SignDef SignDef => signDef;
 
         public Card(SignDef signDef)
         {

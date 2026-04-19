@@ -37,6 +37,7 @@ namespace Code.Game.Scripts.Battle
             AddItem(ItemDefType.BrokenGlass);
             AddItem(ItemDefType.Knife);
             AddItem(ItemDefType.Pills);
+            AddItem(ItemDefType.FortuneCookie);
         }
 
         public void AddAfffect(IAffectGame affectGame) => affectGames.Add(affectGame);
@@ -49,13 +50,13 @@ namespace Code.Game.Scripts.Battle
 
         private async UniTask UseItem(Item item)
         {
-            item.View.transform.parent = SceneLinks.CenterSocket;
-            item.View.transform.DOLocalRotate(Vector3.zero, 0.25f);
-            await item.View.transform.DOLocalMove(Vector3.zero, 0.25f);
-            await UniTask.Delay(TimeSpan.FromSeconds(.5f));
-            itemsService.Release(item);
-            
+            // item.View.transform.parent = SceneLinks.CenterSocket;
+            // item.View.transform.DOLocalRotate(Vector3.zero, 0.25f);
+            // await item.View.transform.DOLocalMove(Vector3.zero, 0.25f);
+            // await UniTask.Delay(TimeSpan.FromSeconds(.5f));
+            item.IsSelectable = false;
             await item.OnUse(this);
+            itemsService.Release(item);
         }
 
         public void OnEnter()

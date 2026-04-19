@@ -1,5 +1,6 @@
 {
   "type": "Code.Game.Scripts.Battle.SignDef",
+  "Name": "Goat",
   "Sign": 4,
   "Sprite": {
     "guid": "96f72008f94d5dd4fbbc32a830ead91a",

@@ -1,0 +1,10 @@
+{
+  "type": "Code.Game.Scripts.Battle.Items.ItemDef",
+  "Name": "Fortune Cookie",
+  "Description": "Reveal the opponent's next move.",
+  "Prefab": {
+    "guid": "e3c47d42ea8097749b8d21cfe089359e",
+    "fileID": 69515242149952780
+  },
+  "Id": "Fortune Cookie"
+}

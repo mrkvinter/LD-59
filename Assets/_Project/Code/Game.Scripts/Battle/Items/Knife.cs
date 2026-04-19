@@ -10,6 +10,7 @@ namespace Code.Game.Scripts.Battle.Items
 
         public override async UniTask OnUse(BattleState battleState)
         {
+            View.gameObject.SetActive(false);
             IsSelectable = false;
             var sceneLinks = battleState.SceneLinks;
             sceneLinks.ItemDescription.Hide();

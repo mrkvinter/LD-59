@@ -15,6 +15,8 @@ namespace Code.Game.Scripts.Battle.Items {
         
         public static RG.DefinitionSystem.Core.DefRef<Code.Game.Scripts.Battle.Items.ItemDef> BrokenGlass = "BrokenGlass";
         
+        public static RG.DefinitionSystem.Core.DefRef<Code.Game.Scripts.Battle.Items.ItemDef> FortuneCookie = "Fortune Cookie";
+        
         public static RG.DefinitionSystem.Core.DefRef<Code.Game.Scripts.Battle.Items.ItemDef> Knife = "Knife";
         
         public static RG.DefinitionSystem.Core.DefRef<Code.Game.Scripts.Battle.Items.ItemDef> Pills = "Pills";

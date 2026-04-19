@@ -1,5 +1,7 @@
 using System;
 using Code.Game.Core;
+using Game.Utilities;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -7,6 +9,9 @@ namespace Code.Game.Scripts.Battle.Items
 {
     public class ItemView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
     {
+        public TMP_Text Text;
+        public StatefulObject StatefulObject;
+
         [SerializeField] private float hoverScale = 1.15f;
 
         public Action OnUse;

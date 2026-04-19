@@ -1,5 +1,6 @@
 {
   "type": "Code.Game.Scripts.Battle.SignDef",
+  "Name": "Scissors",
   "Sign": 3,
   "Sprite": {
     "guid": "4753b4078f8c6c542a7a818f2b8187eb",

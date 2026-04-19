@@ -8,6 +8,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 664781698435623854, guid: 1484ded7468b5b140823d304c728ae95, type: 3}
+      propertyPath: m_Size.y
+      value: 0.053157374
+      objectReference: {fileID: 0}
+    - target: {fileID: 664781698435623854, guid: 1484ded7468b5b140823d304c728ae95, type: 3}
+      propertyPath: m_Size.z
+      value: 0.3988161
+      objectReference: {fileID: 0}
+    - target: {fileID: 664781698435623854, guid: 1484ded7468b5b140823d304c728ae95, type: 3}
+      propertyPath: m_Center.y
+      value: 0.053080916
+      objectReference: {fileID: 0}
+    - target: {fileID: 664781698435623854, guid: 1484ded7468b5b140823d304c728ae95, type: 3}
+      propertyPath: m_Center.z
+      value: 0.035685062
+      objectReference: {fileID: 0}
     - target: {fileID: 5374219373300899903, guid: 1484ded7468b5b140823d304c728ae95, type: 3}
       propertyPath: m_Name
       value: BrokenGlass Variant

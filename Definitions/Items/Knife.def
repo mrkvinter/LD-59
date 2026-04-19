@@ -1,0 +1,10 @@
+{
+  "type": "Code.Game.Scripts.Battle.Items.ItemDef",
+  "Name": "Knife",
+  "Description": "Choose one of the opponent's cards — they cannot play it this turn.",
+  "Prefab": {
+    "guid": "15a312a03ba6b024dba70b4cf1b5878b",
+    "fileID": 69515242149952780
+  },
+  "Id": "Knife"
+}

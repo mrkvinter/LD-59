@@ -1,18 +1,23 @@
-﻿namespace Code.Game.Scripts.Battle.Items
+﻿using Cysharp.Threading.Tasks;
+
+namespace Code.Game.Scripts.Battle.Items
 {
-    public class Item
+    public abstract class Item
     {
         public ItemView View { get; private set; }
         public ItemDef ItemDef { get; set; }
         public virtual IAffectGame GetAffectGame() => null;
         public string Name => ItemDef.Name;
         public string Description => ItemDef.Description;
+        public bool IsSelectable { get; set; }
 
         public void SetView(ItemView view)
         {
             View = view;
             if (View != null) View.Item = this;
         }
+        
+        public virtual UniTask OnUse(BattleState battleState) => UniTask.CompletedTask;
     }
 
     public interface IAffectGame
@@ -26,6 +31,6 @@
     
     public interface IAffectEnemySign : IAffectGame
     {
-        public bool IsSignAvailable(Sign sign);
+        public bool IsSignAvailable(Card card);
     }
 }

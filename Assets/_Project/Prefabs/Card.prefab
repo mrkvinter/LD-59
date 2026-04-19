@@ -32,6 +32,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 4238107011091924412}
   - {fileID: 8880831419830776362}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -47,6 +48,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 177adb9dcbf24e698be3a4df7ee7c649, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Game.Scripts::Code.Game.Scripts.Battle.CardView
+  KnifeStatefulObject: {fileID: 1170988847129215473}
   meshRenderer: {fileID: 7742850780846868805}
   hoverScale: 1.15
 --- !u!65 &2260324920268863502
@@ -97,6 +99,170 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!1001 &4420985219449315927
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 4584600586705526052}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 705cccafdb88d744bad24926b4ce02c1, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.0066855373
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 705cccafdb88d744bad24926b4ce02c1, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.3175881
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 705cccafdb88d744bad24926b4ce02c1, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.11248438
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 705cccafdb88d744bad24926b4ce02c1, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.23942271
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 705cccafdb88d744bad24926b4ce02c1, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.18371558
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 705cccafdb88d744bad24926b4ce02c1, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.5803785
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 705cccafdb88d744bad24926b4ce02c1, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.7563638
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 705cccafdb88d744bad24926b4ce02c1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -75
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 705cccafdb88d744bad24926b4ce02c1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 705cccafdb88d744bad24926b4ce02c1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 144.87
+      objectReference: {fileID: 0}
+    - target: {fileID: 882129737928793925, guid: 705cccafdb88d744bad24926b4ce02c1, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 1be9d8b09472b3a48b28b046645bcad8, type: 2}
+    - target: {fileID: 919132149155446097, guid: 705cccafdb88d744bad24926b4ce02c1, type: 3}
+      propertyPath: m_Name
+      value: Knife
+      objectReference: {fileID: 0}
+    - target: {fileID: 7339356831882890532, guid: 705cccafdb88d744bad24926b4ce02c1, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 1be9d8b09472b3a48b28b046645bcad8, type: 2}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 705cccafdb88d744bad24926b4ce02c1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7789582722812741644}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 705cccafdb88d744bad24926b4ce02c1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5355599004427323038}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 705cccafdb88d744bad24926b4ce02c1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1170988847129215473}
+  m_SourcePrefab: {fileID: 100100000, guid: 705cccafdb88d744bad24926b4ce02c1, type: 3}
+--- !u!1 &3574476515670908678 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 705cccafdb88d744bad24926b4ce02c1, type: 3}
+  m_PrefabInstance: {fileID: 4420985219449315927}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &7789582722812741644
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3574476515670908678}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: fdb5c494bbcabc3459b5b75a5207a203, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &5355599004427323038
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3574476515670908678}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ad50f81b1d25c441943c37a89ba23f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Kybernetik.Animancer::Animancer.AnimancerComponent
+  _Animator: {fileID: 7789582722812741644}
+  _Transitions: {fileID: 0}
+  _ActionOnDisable: 0
+--- !u!114 &1170988847129215473
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3574476515670908678}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26f93827f52d42fa86381aa050923bcd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Game.Utilities::Game.Utilities.StatefulObject
+  animancerComponent: {fileID: 5355599004427323038}
+  visual: {fileID: 4238107011091924412}
+  states:
+  - Name: Default
+    Clip:
+      _FadeDuration: 0.25
+      _Speed: 1
+      _Events:
+        _NormalizedTimes: []
+        _Callbacks: []
+        _Names: []
+      _Clip: {fileID: 7400000, guid: bc672534fab0d3b4a9c6abfe9845ddcc, type: 2}
+      _NormalizedStartTime: NaN
+    TransitionDuration: 0.25
+    Visible: 0
+  - Name: Blocked
+    Clip:
+      _FadeDuration: 0.25
+      _Speed: 1
+      _Events:
+        _NormalizedTimes: []
+        _Callbacks: []
+        _Names: []
+      _Clip: {fileID: 7400000, guid: 299a0315f9e406f49ba02bd9f5dd3be1, type: 2}
+      _NormalizedStartTime: NaN
+    TransitionDuration: 0.25
+    Visible: 1
+  initialState: Default
+  references:
+    version: 2
+    RefIds: []
+--- !u!4 &4238107011091924412 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 705cccafdb88d744bad24926b4ce02c1, type: 3}
+  m_PrefabInstance: {fileID: 4420985219449315927}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8986286968104637889
 PrefabInstance:
   m_ObjectHideFlags: 0

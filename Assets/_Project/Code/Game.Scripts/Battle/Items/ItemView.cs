@@ -22,6 +22,8 @@ namespace Code.Game.Scripts.Battle.Items
 
         public void OnPointerEnter(PointerEventData eventData)
         {
+            if (Item is not { IsSelectable: true }) return;
+
             transform.localScale = baseScale * hoverScale;
             ShowDescription();
         }
@@ -34,6 +36,8 @@ namespace Code.Game.Scripts.Battle.Items
 
         public void OnPointerClick(PointerEventData eventData)
         {
+            if (Item is not { IsSelectable: true }) return;
+            
             OnUse?.Invoke();
         }
 
@@ -41,8 +45,7 @@ namespace Code.Game.Scripts.Battle.Items
         {
             if (Item == null) return;
             sceneLinks.ItemDescription.gameObject.SetActive(true);
-            sceneLinks.ItemDescription.Title.text = Item.Name;
-            sceneLinks.ItemDescription.Description.text = Item.Description;
+            sceneLinks.ItemDescription.Show(Item.Name, Item.Description);
         }
         
         public void HideDescription()

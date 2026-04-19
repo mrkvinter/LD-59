@@ -1,4 +1,4 @@
-﻿using Code.Game.Core;
+using Code.Game.Core;
 using Code.Game.Scripts.Battle.Items;
 using RG.DefinitionSystem.Core;
 using UnityEngine;
@@ -9,35 +9,18 @@ namespace Code.Game.Scripts.Battle
     {
         private readonly SceneLinks sceneLinks = G.Resolve<SceneLinks>();
 
-        private ItemView[] sockets;
-
-        public ItemsService()
-        {
-            sockets = new ItemView[sceneLinks.ItemSockets.Length];
-        }
         public Item CreateItem(DefRef<ItemDef> itemDef)
         {
-            var freeSocketIndex = GetFreeSocketIndex();
-            if (freeSocketIndex == -1)
+            var item = ItemFactory.Create(itemDef, sceneLinks.ItemHolder.transform);
+            if (!sceneLinks.ItemHolder.TryAdd(item.View, out var socket))
             {
                 Debug.LogError("No free sockets");
+                Object.Destroy(item.View.gameObject);
                 return null;
             }
-            
-            var freeSocket = sceneLinks.ItemSockets[freeSocketIndex];
-            var item = ItemFactory.Create(itemDef, freeSocket);
-            sockets[freeSocketIndex] = item.View;
-            return item;
-        }
-        
-        private int GetFreeSocketIndex()
-        {
-            for (var i = 0; i < sockets.Length; i++)
-            {
-                if (sockets[i] == null) return i;
-            }
 
-            return -1;
+            item.View.transform.SetParent(socket, false);
+            return item;
         }
 
         public void Release(Item item)
@@ -45,12 +28,7 @@ namespace Code.Game.Scripts.Battle
             if (item?.View == null) return;
 
             item.View.HideDescription();
-            for (var i = 0; i < sockets.Length; i++)
-            {
-                if (sockets[i] != item.View) continue;
-                sockets[i] = null;
-                break;
-            }
+            sceneLinks.ItemHolder.Release(item.View);
 
             Object.Destroy(item.View.gameObject);
             item.SetView(null);

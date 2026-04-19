@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Code.Game.Scripts.Battle.Items;
+using RG.DefinitionSystem.Core;
 using Random = UnityEngine.Random;
 
 namespace Code.Game.Scripts.Battle
@@ -10,42 +10,47 @@ namespace Code.Game.Scripts.Battle
     {
         public int Health { get; private set; }
         
-        public readonly List<Sign> Signs = new();
-        public readonly List<Sign> SignsBag = new();
-        public readonly List<Sign> SignsHand = new();
+        public readonly List<Card> Cards = new();
+        public readonly List<Card> CardsBag = new();
+        public readonly List<Card> CardsHand = new();
         public readonly List<Item> Items = new();
         public readonly List<IAffectEnemySign> Affects = new();
         
-        public Sign SelectedSign { get; private set; }
-        public int RockProbability => (int)(AvailableSigns.Count(x => x == Sign.Rock) / (float) AvailableSigns.Count() * 100);
-        public int PaperProbability => (int)((AvailableSigns.Count(x => x == Sign.Paper) / (float) AvailableSigns.Count()) * 100);
-        public int ScissorsProbability => (int)((AvailableSigns.Count(x => x == Sign.Scissors) / (float) AvailableSigns.Count()) * 100);
-        public int GoatProbability => (int)((AvailableSigns.Count(x => x == Sign.Goat) / (float) AvailableSigns.Count()) * 100);
-        public int FProbability => (int)((AvailableSigns.Count(x => x == Sign.Fuck) / (float) AvailableSigns.Count()) * 100);
+        public Card SelectedCard { get; private set; }
+        // public int RockProbability => (int)(AvailableSigns.Count(x => x == Sign.Rock) / (float) AvailableSigns.Count() * 100);
+        // public int PaperProbability => (int)((AvailableSigns.Count(x => x == Sign.Paper) / (float) AvailableSigns.Count()) * 100);
+        // public int ScissorsProbability => (int)((AvailableSigns.Count(x => x == Sign.Scissors) / (float) AvailableSigns.Count()) * 100);
+        // public int GoatProbability => (int)((AvailableSigns.Count(x => x == Sign.Goat) / (float) AvailableSigns.Count()) * 100);
+        // public int FProbability => (int)((AvailableSigns.Count(x => x == Sign.Fuck) / (float) AvailableSigns.Count()) * 100);
 
-        public IEnumerable<Sign> AvailableSigns => 
-            SignsHand.Where(x => Affects.All(a => a.IsSignAvailable(x)));
+        public IEnumerable<Card> AvailableSigns => 
+            CardsHand.Where(x => Affects.All(a => a.IsSignAvailable(x)));
         
-        public Player(int health, List<Sign> signsBag)
+        public Player(int health, List<DefRef<SignDef>> signsBag)
         {
             Health = health;
-            SignsBag = signsBag.OrderBy(x => Guid.NewGuid()).ToList();
+
+            foreach (var signDef in signsBag)
+            {
+                CardsBag.Add(new Card(signDef.Unwrap()));
+            }
         }  
         
         public void Draw(int count)
         {
-            while (count > 0 && SignsBag.Count > 0)
+            while (count > 0 && CardsBag.Count > 0)
             {
-                var sign = SignsBag[0];
-                SignsBag.RemoveAt(0);
-                SignsHand.Add(sign);
+                var sign = CardsBag[0];
+                CardsBag.RemoveAt(0);
+                CardsHand.Add(sign);
                 count--;
             }
         }
 
         public void SelectSign()
         {
-            SelectedSign = AvailableSigns.ToList()[Random.Range(0, AvailableSigns.Count())];
+            var cards = CardsHand.Where(e => !e.IsBLocked).ToList();
+            SelectedCard = cards[Random.Range(0, cards.Count())];
         }
 
         public void ReduceHealth()
@@ -55,19 +60,20 @@ namespace Code.Game.Scripts.Battle
 
         public void RemoveSelectedSign()
         {
-            SignsHand.Remove(SelectedSign);
+            CardsHand.Remove(SelectedCard);
+            SelectedCard = null;
         }
         
-        public void RemoveSign(Sign sign)
+        public void RemoveCard(Card card)
         {
-            SignsHand.Remove(sign);
+            CardsHand.Remove(card);
         }
         
         public void AddAffects(IAffectEnemySign affect)
         {
             Affects.Add(affect);
 
-            if (!affect.IsSignAvailable(SelectedSign))
+            if (!affect.IsSignAvailable(SelectedCard))
             {
                 RemoveSelectedSign();
                 SelectSign();

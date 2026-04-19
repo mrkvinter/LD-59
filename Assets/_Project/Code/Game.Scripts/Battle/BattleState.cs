@@ -18,13 +18,15 @@ namespace Code.Game.Scripts.Battle
         private const int SignsPerRound = 5;
         
         private int currentRound;
-        private Player enemyPlayer;
-        private Player player;
+        public Player EnemyPlayer;
+        public Player Player;
+        public readonly SceneLinks SceneLinks = G.Resolve<SceneLinks>();
 
-        private readonly SceneLinks sceneLinks = G.Resolve<SceneLinks>();
         private readonly ItemsService itemsService;
         
         private List<IAffectGame> affectGames = new();
+        
+        public Action OnRoundEnd;
 
         public BattleState()
         {
@@ -37,40 +39,43 @@ namespace Code.Game.Scripts.Battle
         private void AddItem(DefRef<ItemDef> itemDef)
         {
             var item = itemsService.CreateItem(itemDef);
+            item.IsSelectable = true;
             item.View.OnUse += () => UseItem(item).Forget();
         }
 
         private async UniTask UseItem(Item item)
         {
-            item.View.transform.parent = sceneLinks.CenterSocket;
+            item.View.transform.parent = SceneLinks.CenterSocket;
+            item.View.transform.DOLocalRotate(Vector3.zero, 0.5f);
             await item.View.transform.DOLocalMove(Vector3.zero, 0.5f);
             await UniTask.Delay(TimeSpan.FromSeconds(1f));
+
             var affect = item.GetAffectGame();
             affectGames.Add(affect);
             if (affect is IAffectEnemySign affectEnemySign)
             {
-                enemyPlayer.AddAffects(affectEnemySign);
+                EnemyPlayer.AddAffects(affectEnemySign);
             }
             itemsService.Release(item);
             
-            PrintEnemyState();
+            await item.OnUse(this);
         }
 
         public void OnEnter()
         {
             currentRound = 0;
-            var baseDeck = new List<Sign>();
-            baseDeck.AddRange(Enumerable.Repeat(Sign.Rock, 2));
-            baseDeck.AddRange(Enumerable.Repeat(Sign.Paper, 2));
-            baseDeck.AddRange(Enumerable.Repeat(Sign.Scissors, 2));
-            baseDeck.AddRange(Enumerable.Repeat(Sign.Goat, 1));
-            baseDeck.AddRange(Enumerable.Repeat(Sign.Fuck, 1));
+            var baseDeck = new List<DefRef<SignDef>>();
+            baseDeck.AddRange(Enumerable.Repeat(SignDefType.Rock, 2));
+            baseDeck.AddRange(Enumerable.Repeat(SignDefType.Papper, 2));
+            baseDeck.AddRange(Enumerable.Repeat(SignDefType.Scissors, 2));
+            baseDeck.AddRange(Enumerable.Repeat(SignDefType.Goat, 1));
+            baseDeck.AddRange(Enumerable.Repeat(SignDefType.F, 1));
             
-            enemyPlayer = new Player(3, baseDeck.ToList());
-            player = new Player(3, baseDeck.ToList());
+            EnemyPlayer = new Player(3, baseDeck.OrderBy(_ => Guid.NewGuid()).ToList());
+            Player = new Player(3, baseDeck.OrderBy(_ => Guid.NewGuid()).ToList());
             
-            sceneLinks.EnemyHealthPanel.SetHealthCount(player.Health);
-            sceneLinks.PlayerHealthPanel.SetHealthCount(enemyPlayer.Health);
+            SceneLinks.EnemyHealthPanel.SetHealthCount(Player.Health);
+            SceneLinks.PlayerHealthPanel.SetHealthCount(EnemyPlayer.Health);
             
             StartRound();
         }
@@ -83,65 +88,66 @@ namespace Code.Game.Scripts.Battle
         private void StartRound()
         {
             currentRound++;
-            enemyPlayer.Draw(SignsPerRound);
-            player.Draw(SignsPerRound);
-            PrintEnemyState();
+            EnemyPlayer.Draw(SignsPerRound);
+            Player.Draw(SignsPerRound);
             
-            enemyPlayer.SelectSign();
+            EnemyPlayer.SelectSign();
             
             InstantiateCards();
         }
 
-        private void PrintEnemyState()
-        {
-            var sb = new StringBuilder();
-            sb.AppendLine($"Rock: {enemyPlayer.RockProbability}%")
-                .AppendLine($"Paper: {enemyPlayer.PaperProbability}%")
-                .AppendLine($"Scissors: {enemyPlayer.ScissorsProbability}%")
-                .AppendLine($"Goat: {enemyPlayer.GoatProbability}%")
-                .AppendLine($"F@3k: {enemyPlayer.FProbability}%");
-            
-            sceneLinks.EnemyStateText.text = sb.ToString();
-        }
+        // private void PrintEnemyState()
+        // {
+        //     var sb = new StringBuilder();
+        //     sb.AppendLine($"Rock: {enemyPlayer.RockProbability}%")
+        //         .AppendLine($"Paper: {enemyPlayer.PaperProbability}%")
+        //         .AppendLine($"Scissors: {enemyPlayer.ScissorsProbability}%")
+        //         .AppendLine($"Goat: {enemyPlayer.GoatProbability}%")
+        //         .AppendLine($"F@3k: {enemyPlayer.FProbability}%");
+        //     
+        //     sceneLinks.EnemyStateText.text = sb.ToString();
+        // }
 
         private void InstantiateCards()
         {
-            foreach (var sign in player.SignsHand)
+            foreach (var card in Player.CardsHand)
             {
-                var card = Object.Instantiate(sceneLinks.CardPrefab);
-                sceneLinks.PlayerCardsParent.Add(card);
-                card.SetSign(sign);
+                var cardView = Object.Instantiate(SceneLinks.CardPrefab);
+                SceneLinks.PlayerCardsParent.Add(cardView);
+                card.SetView(cardView);
                 
-                card.OnClick += () => OnCardSelect(card);
+                cardView.OnClick += () => OnCardSelect(cardView);
             }
             
-            foreach (var sign in enemyPlayer.SignsHand)
+            foreach (var card in EnemyPlayer.CardsHand)
             {
-                var card = Object.Instantiate(sceneLinks.CardPrefab);
-                sceneLinks.EnemyCardsParent.Add(card);
-                card.SetSign(sign);
+                var cardView = Object.Instantiate(SceneLinks.CardPrefab);
+                SceneLinks.EnemyCardsParent.Add(cardView);
+                card.SetView(cardView);
             }
         }
 
         private void OnCardSelect(CardView cardView) => UniTask.Create(async () =>
         {
             Object.Destroy(cardView.gameObject);
-            sceneLinks.Hands.SetActive(true);
-            sceneLinks.GameUI.SetActive(false);
+            SceneLinks.Hands.SetActive(true);
+            SceneLinks.GameUI.SetActive(false);
 
-            sceneLinks.LeftHandView.SetSign(Sign.Rock);
-            sceneLinks.RightHandView.SetSign(Sign.Rock);
+            SceneLinks.LeftHandView.SetSign(Sign.Rock);
+            SceneLinks.RightHandView.SetSign(Sign.Rock);
 
-            sceneLinks.LeftHandView.PlayShakeAnimation().Forget();
-            await sceneLinks.RightHandView.PlayShakeAnimation();
+            SceneLinks.PlayerCardsParent.Remove(cardView);
+
+            SceneLinks.LeftHandView.PlayShakeAnimation().Forget();
+            await SceneLinks.RightHandView.PlayShakeAnimation();
             
-            sceneLinks.LeftHandView.SetSign(enemyPlayer.SelectedSign);
-            sceneLinks.RightHandView.SetSign(cardView.SelectedSign);
+            SceneLinks.LeftHandView.SetSign(EnemyPlayer.SelectedCard.Sign);
+            SceneLinks.RightHandView.SetSign(cardView.SelectedSign);
             
             await UniTask.Delay(TimeSpan.FromSeconds(1f));
             
-            var winner = GetWinner(enemyPlayer.SelectedSign, cardView.SelectedSign);
-            Debug.Log($"Winner: {winner}, Enemy Sign: {enemyPlayer.SelectedSign}, Player Sign: {cardView.SelectedSign}");
+            var winner = GetWinner(EnemyPlayer.SelectedCard.Sign, cardView.SelectedSign);
+            Debug.Log($"Winner: {winner}, Enemy Sign: {EnemyPlayer.SelectedCard.Sign}, Player Sign: {cardView.SelectedSign}");
 
             if (affectGames.FirstOrDefault(e => e is IAffectWinner) is IAffectWinner affectWinner)
             {
@@ -151,34 +157,38 @@ namespace Code.Game.Scripts.Battle
             
             if (winner == Winner.Right)
             {
-                sceneLinks.WinTitle.SetActive(true);
-                enemyPlayer.ReduceHealth();
+                SceneLinks.WinTitle.SetActive(true);
+                EnemyPlayer.ReduceHealth();
             }
             if (winner == Winner.Left)
             {
-                sceneLinks.LoseTitle.SetActive(true);
-                player.ReduceHealth();
+                SceneLinks.LoseTitle.SetActive(true);
+                Player.ReduceHealth();
             }
-            if (winner == Winner.Draw) sceneLinks.DrawTitle.SetActive(true);
+            if (winner == Winner.Draw) SceneLinks.DrawTitle.SetActive(true);
             
-            enemyPlayer.RemoveSelectedSign();
-            player.RemoveSign(cardView.SelectedSign);
+            Player.RemoveCard(cardView.Card);
 
-            sceneLinks.EnemyHealthPanel.SetHealthCount(enemyPlayer.Health);
-            sceneLinks.PlayerHealthPanel.SetHealthCount(player.Health);
-            PrintEnemyState();
+            SceneLinks.EnemyHealthPanel.SetHealthCount(EnemyPlayer.Health);
+            SceneLinks.PlayerHealthPanel.SetHealthCount(Player.Health);
+            var enemySelectedCard = EnemyPlayer.SelectedCard;
+            SceneLinks.EnemyCardsParent.Remove(enemySelectedCard.View);
+            EnemyPlayer.RemoveSelectedSign();
+            Object.Destroy(enemySelectedCard.View.gameObject);
 
             await UniTask.Delay(TimeSpan.FromSeconds(2f));
             
-            sceneLinks.WinTitle.SetActive(false);
-            sceneLinks.LoseTitle.SetActive(false);
-            sceneLinks.DrawTitle.SetActive(false);
+            SceneLinks.WinTitle.SetActive(false);
+            SceneLinks.LoseTitle.SetActive(false);
+            SceneLinks.DrawTitle.SetActive(false);
 
-            sceneLinks.Hands.SetActive(false);
-            sceneLinks.GameUI.SetActive(true);
+            SceneLinks.Hands.SetActive(false);
+            SceneLinks.GameUI.SetActive(true);
 
-            enemyPlayer.ClearAffects();
-            enemyPlayer.SelectSign();
+            EnemyPlayer.ClearAffects();
+            EnemyPlayer.SelectSign();
+            
+            OnRoundEnd?.Invoke();
         });
 
         private Winner GetWinner(Sign leftSign, Sign rightSign)

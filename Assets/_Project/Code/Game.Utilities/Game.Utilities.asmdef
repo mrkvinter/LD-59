@@ -4,6 +4,7 @@
     "VContainer",
     "UniTask",
     "ContentSystem.Core",
-    "DCFApixels.DebugX"
+    "DCFApixels.DebugX",
+    "Kybernetik.Animancer"
   ]
 }

@@ -14,14 +14,4 @@ namespace Code.Game.Scripts.Battle.Items
             };
         }
     }
-    
-    public class Knife : Item
-    {
-        public override IAffectGame GetAffectGame() => new KnifeAffect();
-
-        private class KnifeAffect : IAffectEnemySign
-        {
-            public bool IsSignAvailable(Sign sign) => sign != Sign.Fuck;
-        }
-    }
 }

@@ -1,6 +1,7 @@
 ﻿using Code.Game.Scripts.Battle;
 using Code.Game.Scripts.Battle.Items;
 using TMPro;
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -36,6 +37,11 @@ namespace Code.Game.Scripts
 
         [Header("Items")]
         public Transform CenterSocket;
-        public Transform[] ItemSockets;
+        public ItemHolder ItemHolder;
+        
+        [Header("VCams")]
+        public CinemachineVirtualCameraBase VC_LookAtEnemy;
+        public CinemachineVirtualCameraBase VC_LookAtTable;
+        public CinemachineVirtualCameraBase VC_LookAtEnemyCard;
     }
 }

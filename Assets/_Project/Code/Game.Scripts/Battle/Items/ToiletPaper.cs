@@ -8,7 +8,6 @@ namespace Code.Game.Scripts.Battle.Items
 
         public override async UniTask OnUse(BattleState battleState, Player player)
         {
-            BlockSameItemsWithinRound(battleState, player);
             await MoveToCenter(battleState.SceneLinks);
             await UniTask.Delay(500);
             MoveDown().Forget();

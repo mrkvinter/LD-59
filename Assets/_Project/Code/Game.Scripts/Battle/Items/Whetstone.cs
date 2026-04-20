@@ -1,5 +1,7 @@
-using System;
+using System.Linq;
 using Cysharp.Threading.Tasks;
+using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Code.Game.Scripts.Battle.Items
 {
@@ -9,21 +11,27 @@ namespace Code.Game.Scripts.Battle.Items
 
         public override async UniTask OnUse(BattleState battleState, Player player)
         {
-            BlockSameItemsWithinRound(battleState, battleState.Player);
             await MoveToCenter(battleState.SceneLinks);
+            await UniTask.Delay(500);
 
-            battleState.ScoreForScissors *= 2;
-            battleState.OnTurnEnd += OnRoundEnd;
+            var opponent = player == battleState.Player ? battleState.EnemyPlayer : battleState.Player;
+            var opponentHolder = player == battleState.Player
+                ? battleState.SceneLinks.EnemyCardsParent
+                : battleState.SceneLinks.PlayerCardsParent;
 
-            await UniTask.Delay(TimeSpan.FromSeconds(0.5f));
-            await MoveDown();
-
-
-            void OnRoundEnd()
+            var candidates = opponent.CardsHand.Where(c => c != opponent.SelectedCard).ToList();
+            if (candidates.Count > 0)
             {
-                battleState.ScoreForScissors = 1;
-                battleState.OnTurnEnd -= OnRoundEnd;
+                var target = candidates[Random.Range(0, candidates.Count)];
+                if (target.View != null)
+                {
+                    opponentHolder.Remove(target.View);
+                    Object.Destroy(target.View.gameObject);
+                }
+                opponent.RemoveCard(target);
             }
+
+            await MoveDown();
         }
     }
 }

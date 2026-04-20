@@ -90,8 +90,8 @@ namespace Code.Game.Scripts.Battle
 
             // AddItem(ItemDefType.BrokenGlass);
             // AddItem(ItemDefType.Knife);
-            AddItem(ItemDefType.ToiletPaper);
-            AddItem(ItemDefType.Pills);
+            // AddItem(ItemDefType.ToiletPaper);
+            // AddItem(ItemDefType.Pills);
             // AddItem(ItemDefType.SpareSignalFlare);
             // AddItem(ItemDefType.Whetstone);
             // AddItem(ItemDefType.FortuneCookie);

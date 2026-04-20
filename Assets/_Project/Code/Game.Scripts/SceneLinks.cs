@@ -83,5 +83,12 @@ namespace Code.Game.Scripts
         public GameObject FirstPersonEvent;
         public GameObject SecondPersonEvent;
         public GameObject ThirdPersonEvent;
+        
+        public AudioListener AudioListener;
+
+        public void SwitchAudio()
+        {
+            AudioListener.enabled = !AudioListener.enabled;
+        }
     }
 }

@@ -53,4 +53,9 @@ MonoBehaviour:
   - Name: pills_effect
     Clips:
     - {fileID: 8300000, guid: f66e9a0b48fdfb04691aa9ae978700e3, type: 3}
-  mixerGroups: []
+  - Name: music
+    Clips:
+    - {fileID: 8300000, guid: ff97e1d7575b80441911d30aae5b6699, type: 3}
+  mixerGroups:
+  - Name: default
+    Group: {fileID: 24300002, guid: 1f8f20c45867c4e499323553e8dc844e, type: 2}

@@ -94,10 +94,12 @@ namespace Code.Game.Scripts.GameStates
             ItemDefType.Pills,
             ItemDefType.FortuneCookie,
             ItemDefType.FortuneCookie,
+            ItemDefType.FortuneCookie,
 
             ItemDefType.SpareSignalFlare,
             ItemDefType.BrokenGlass,
             ItemDefType.ToiletPaper,
+            ItemDefType.Whetstone,
         };
 
         public void Initialize()
@@ -375,7 +377,6 @@ namespace Code.Game.Scripts.GameStates
             sceneLinks.SecondPersonEvent.gameObject.SetActive(false);
             var dPrinter = new DialoguePrinter(sceneLinks.DialoguePanel);
 
-            battleState.OnGameEnd += OnBattleEnd;
 
             sceneLinks.MainLight.intensity = 0;
             await sceneLinks.HandStatefulObject.SetStateAsync("Default");
@@ -409,6 +410,12 @@ namespace Code.Game.Scripts.GameStates
 
             sceneLinks.DialoguePanel.gameObject.SetActive(true);
             await dPrinter.PrintByLine(sceneLinks.Person3AudioSource, "Go ahead, surprise me. Though I doubt you'll manage it.");
+            var music = G.AudioService.PlayLoop("music");
+            music.AudioSource.volume = 0f;
+            
+            battleState.OnGameEnd += OnBattleEnd;
+
+            DOTween.To(() => music.AudioSource.volume, x => music.AudioSource.volume = x, 0.5f, 5f);
             sceneLinks.VC_LookAtEnemy.Priority.Enabled = false;
             sceneLinks.InputBlocker.gameObject.SetActive(false);
             sceneLinks.DialoguePanel.gameObject.SetActive(false);
@@ -420,6 +427,11 @@ namespace Code.Game.Scripts.GameStates
 
                 if (playerWon)
                 {
+                    if (music != null)
+                    {
+                        DOTween.To(() => music.AudioSource.volume, x => music.AudioSource.volume = x, 0f, 5f);
+                    }
+            
                     sceneLinks.InputBlocker.gameObject.SetActive(true);
                     sceneLinks.DialoguePanel.gameObject.SetActive(true);
                     sceneLinks.VC_LookAtEnemy.Priority.Enabled = true;

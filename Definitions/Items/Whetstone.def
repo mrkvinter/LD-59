@@ -4,15 +4,15 @@
   "Rotation": {
     "x": 0.210009947,
     "y": -0.349183,
-    "z": -0.0806152746,
+    "z": -0.08061528,
     "w": -0.90965277,
     "eulerAngles": {
       "x": 334.0,
       "y": 42.0,
-      "z": 9.49910145E-07
+      "z": 1.89982029E-06
     }
   },
-  "Description": "Scores 2 points this turn instead of 1.",
+  "Description": "Randomly remove a card from the opponent's hand.",
   "Prefab": {
     "guid": "07292e3f986f9b240b56c4e213a70b15",
     "fileID": 4775122535878512651

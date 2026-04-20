@@ -74,6 +74,6 @@ jobs:
           ./butler -V
 
       - name: Push to itch.io
-        run: ./butler push ./build/web.zip mrkvinter/ld-59:webgl
+        run: ./butler push ./build/web.zip mrkvinter/rpsgf:webgl
         env:
           BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}

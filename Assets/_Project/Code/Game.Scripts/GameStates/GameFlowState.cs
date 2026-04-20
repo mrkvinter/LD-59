@@ -326,7 +326,7 @@ namespace Code.Game.Scripts.GameStates
 
             var enemyPlayer = new Battle.Player(3, GetSecondDeck());
             var player = new Battle.Player(3, GetBaseDeck());
-            battleState.ItemsPerRound = 2;
+            battleState.ItemsPerRound = 3;
             battleState.CardsPerRound = 5;
             battleState.StartBattle(player, enemyPlayer, baseItems);
 
@@ -396,7 +396,7 @@ namespace Code.Game.Scripts.GameStates
             var enemyPlayer = new Battle.Player(3, GetThirdDeck());
             var player = new Battle.Player(3, GetBaseDeckImproved());
             battleState.ItemsPerRound = 4;
-            battleState.CardsPerRound = 5;
+            battleState.CardsPerRound = 6;
             battleState.StartBattle(player, enemyPlayer, baseItems);
 
             sceneLinks.ThirdPersonEvent.gameObject.SetActive(true);
@@ -427,7 +427,7 @@ namespace Code.Game.Scripts.GameStates
             
             battleState.OnGameEnd += OnBattleEnd;
 
-            DOTween.To(() => music.AudioSource.volume, x => music.AudioSource.volume = x, 0.5f, 5f);
+            DOTween.To(() => music.AudioSource.volume, x => music.AudioSource.volume = x, 0.35f, 5f);
             sceneLinks.VC_LookAtEnemy.Priority.Enabled = false;
             sceneLinks.InputBlocker.gameObject.SetActive(false);
             sceneLinks.DialoguePanel.gameObject.SetActive(false);

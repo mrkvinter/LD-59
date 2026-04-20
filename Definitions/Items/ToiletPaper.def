@@ -2,17 +2,17 @@
   "type": "Code.Game.Scripts.Battle.Items.ItemDef",
   "Name": "Toilet Paper",
   "Rotation": {
-    "x": -0.2079117,
+    "x": 0.207911611,
     "y": 0.0,
     "z": 0.0,
-    "w": 0.9781476,
+    "w": -0.9781476,
     "eulerAngles": {
       "x": 336.0,
       "y": 0.0,
       "z": 0.0
     }
   },
-  "Description": "Scores 2 points this turn instead of 1.",
+  "Description": "Duplicate a card of your choice — yours or the opponent's.",
   "Prefab": {
     "guid": "caf19da6931d1ab4e981f6c4f83d752a",
     "fileID": 69515242149952780

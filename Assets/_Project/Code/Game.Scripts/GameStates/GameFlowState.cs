@@ -61,6 +61,18 @@ namespace Code.Game.Scripts.GameStates
             return baseDeck.OrderBy(x => Guid.NewGuid()).ToList();
         }
 
+        private List<DefRef<SignDef>> GetBaseDeckImproved()
+        {
+            var baseDeck = new List<DefRef<SignDef>>();
+            baseDeck.AddRange(Enumerable.Repeat(SignDefType.Rock, 2));
+            baseDeck.AddRange(Enumerable.Repeat(SignDefType.Papper, 2));
+            baseDeck.AddRange(Enumerable.Repeat(SignDefType.Scissors, 2));
+            baseDeck.AddRange(Enumerable.Repeat(SignDefType.Goat, 2));
+            baseDeck.AddRange(Enumerable.Repeat(SignDefType.F, 2));
+
+            return baseDeck.OrderBy(x => Guid.NewGuid()).ToList();
+        }
+
         private List<DefRef<SignDef>> GetSecondDeck()
         {
             var baseDeck = new List<DefRef<SignDef>>();
@@ -79,7 +91,7 @@ namespace Code.Game.Scripts.GameStates
             baseDeck.AddRange(Enumerable.Repeat(SignDefType.Rock, 2));
             baseDeck.AddRange(Enumerable.Repeat(SignDefType.Papper, 2));
             baseDeck.AddRange(Enumerable.Repeat(SignDefType.Scissors, 2));
-            baseDeck.AddRange(Enumerable.Repeat(SignDefType.Goat, 3));
+            baseDeck.AddRange(Enumerable.Repeat(SignDefType.Goat, 2));
             baseDeck.AddRange(Enumerable.Repeat(SignDefType.F, 1));
 
             return baseDeck.OrderBy(x => Guid.NewGuid()).ToList();
@@ -381,9 +393,9 @@ namespace Code.Game.Scripts.GameStates
             sceneLinks.MainLight.intensity = 0;
             await sceneLinks.HandStatefulObject.SetStateAsync("Default");
 
-            var enemyPlayer = new Battle.Player(4, GetThirdDeck());
-            var player = new Battle.Player(3, GetBaseDeck());
-            battleState.ItemsPerRound = 3;
+            var enemyPlayer = new Battle.Player(3, GetThirdDeck());
+            var player = new Battle.Player(3, GetBaseDeckImproved());
+            battleState.ItemsPerRound = 4;
             battleState.CardsPerRound = 5;
             battleState.StartBattle(player, enemyPlayer, baseItems);
 
@@ -410,7 +422,7 @@ namespace Code.Game.Scripts.GameStates
 
             sceneLinks.DialoguePanel.gameObject.SetActive(true);
             await dPrinter.PrintByLine(sceneLinks.Person3AudioSource, "Go ahead, surprise me. Though I doubt you'll manage it.");
-            var music = G.AudioService.PlayLoop("music");
+            var music = G.AudioService.PlaySound("music");
             music.AudioSource.volume = 0f;
             
             battleState.OnGameEnd += OnBattleEnd;

@@ -1,4 +1,5 @@
 using System.Linq;
+using Code.Game.Core;
 using Cysharp.Threading.Tasks;
 using Sirenix.Utilities;
 
@@ -39,6 +40,8 @@ namespace Code.Game.Scripts.Battle.Items
 
             void OnCardSelect(CardView cardView)
             {
+                UniTask.Delay(300)
+                    .ContinueWith(() => G.AudioService.PlaySound("knife_use", 0.1f));
                 selectedCard = cardView;
                 cardView.Card.SetIsBLocked(true, () => tcs.TrySetResult());
                 battleState.Player.CardsHand.ForEach(card => card.View.IsSelectable = true);

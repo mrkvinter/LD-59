@@ -1,4 +1,5 @@
 ﻿using System;
+using Code.Game.Core;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
@@ -28,6 +29,7 @@ namespace Code.Game.Scripts.Battle.Items
 
         protected async UniTask MoveToCenter(SceneLinks SceneLinks)
         {
+            G.AudioService.PlaySound("use", 0.1f);
             View.transform.parent = IsBigItem ? SceneLinks.CenterBigItemSocket : SceneLinks.CenterSocket;
             View.transform.DOLocalRotateQuaternion(ItemDef.Rotation, 0.25f);
             await View.transform.DOLocalMove(Vector3.zero, 0.25f);
@@ -35,6 +37,7 @@ namespace Code.Game.Scripts.Battle.Items
 
         protected async UniTask MoveDown()
         {
+            G.AudioService.PlaySound("use", 0.1f);
             await View.transform.DOLocalMoveY(-1, 0.5f);
         }
 

@@ -56,6 +56,15 @@ MonoBehaviour:
   - Name: music
     Clips:
     - {fileID: 8300000, guid: ff97e1d7575b80441911d30aae5b6699, type: 3}
+  - Name: use
+    Clips:
+    - {fileID: 8300000, guid: b8af7650cdd88df42ada4f10bb660640, type: 3}
+  - Name: knife_use
+    Clips:
+    - {fileID: 8300000, guid: e944716be9dd02d4fa081053c9fcd387, type: 3}
+  - Name: click
+    Clips:
+    - {fileID: 8300000, guid: d9e68627552e3cd458803787a34f3ee8, type: 3}
   mixerGroups:
   - Name: default
     Group: {fileID: 24300002, guid: 1f8f20c45867c4e499323553e8dc844e, type: 2}

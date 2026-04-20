@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Code.Game.Core;
 using Game.Utilities;
 using RG.DefinitionSystem.Core;
 using UnityEngine;
@@ -76,6 +77,8 @@ namespace Code.Game.Scripts.Battle
         public void OnPointerEnter(PointerEventData eventData)
         {
             if (!IsSelectable) return;
+            
+            G.AudioService.PlaySound("click", 0.2f);
             transform.localScale = baseScale * hoverScale;
         }
 

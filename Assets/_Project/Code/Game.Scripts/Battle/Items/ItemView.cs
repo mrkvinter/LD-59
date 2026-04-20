@@ -30,6 +30,7 @@ namespace Code.Game.Scripts.Battle.Items
         {
             if (Item is not { IsSelectable: true } || Item.BlockedForRound) return;
 
+            G.AudioService.PlaySound("click", 0.2f);
             transform.localScale = baseScale * hoverScale;
             ShowDescription();
         }

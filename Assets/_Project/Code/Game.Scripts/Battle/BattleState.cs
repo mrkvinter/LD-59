@@ -214,25 +214,26 @@ namespace Code.Game.Scripts.Battle
 
             SceneLinks.LeftHandView.SetVisible(true);
             SceneLinks.RightHandView.SetVisible(true);
-
-            if (EnemyPlayer.SelectedCard == null) SceneLinks.LeftHandView.SetVisible(false);
-
+            
             SceneLinks.LeftHandView.SetSign(Sign.Rock);
             SceneLinks.RightHandView.SetSign(Sign.Rock);
 
+            if (EnemyPlayer.SelectedCard == null) SceneLinks.LeftHandView.SetVisible(false);
+            
             SceneLinks.PlayerCardsParent.Remove(cardView);
 
             SceneLinks.LeftHandView.PlayShakeAnimation().Forget();
+
             await SceneLinks.RightHandView.PlayShakeAnimation();
 
-            SceneLinks.LeftHandView.SetSign(EnemyPlayer.SelectedCard.Sign);
+            if (EnemyPlayer.SelectedCard != null) SceneLinks.LeftHandView.SetSign(EnemyPlayer.SelectedCard.Sign);
             SceneLinks.RightHandView.SetSign(cardView.SelectedSign);
 
             await UniTask.Delay(TimeSpan.FromSeconds(.5f));
 
             var (winner, winnerSign) = GetWinner(EnemyPlayer.SelectedCard?.Sign ?? Sign.None, cardView.SelectedSign);
             Debug.Log(
-                $"Winner: {winner}, Enemy Sign: {EnemyPlayer.SelectedCard.Sign}, Player Sign: {cardView.SelectedSign}");
+                $"Winner: {winner}, Enemy Sign: {EnemyPlayer.SelectedCard?.Sign ?? Sign.None}, Player Sign: {cardView.SelectedSign}");
 
             if (affectGames.FirstOrDefault(e => e is IAffectWinner) is IAffectWinner affectWinner)
             {
@@ -268,9 +269,12 @@ namespace Code.Game.Scripts.Battle
 
             UpdateAll();
             var enemySelectedCard = EnemyPlayer.SelectedCard;
-            SceneLinks.EnemyCardsParent.Remove(enemySelectedCard.View);
-            EnemyPlayer.RemoveSelectedSign();
-            Object.Destroy(enemySelectedCard.View.gameObject);
+            if (enemySelectedCard != null)
+            {
+                SceneLinks.EnemyCardsParent.Remove(enemySelectedCard.View);
+                EnemyPlayer.RemoveSelectedSign();
+                Object.Destroy(enemySelectedCard.View.gameObject);
+            }
 
             await UniTask.Delay(TimeSpan.FromSeconds(1.5f));
 
